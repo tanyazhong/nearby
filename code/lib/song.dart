@@ -5,8 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 
-const String clientID = "23d2ea2c69e74794b6390d74307a6812";
-const String clientSecret = "5b342954dd284bb18625a596023d526b";
+const String clientID = "b03425c1e1af4ba1bc82f71a5bc0875b";
+const String clientSecret = "2bcdc8148d674bfa92507e10280971f4";
 
 class Song extends StatefulWidget {
   @override
@@ -16,21 +16,6 @@ class Song extends StatefulWidget {
 class _SongState extends State<Song> {
   var spotify;
   var credentials;
-
-  redirect(String authUri) async {
-    print("redirecting");
-    await launch(authUri);
-  }
-
-  Future<String> listen(redirectUri) async {
-    String responseUri = "empty string";
-    final linksStream = linkStream.listen((String? link) async {
-      if (link!.startsWith(redirectUri)) {
-        responseUri = link;
-      }
-    });
-    return responseUri;
-  }
 
   @override
   initState() {
