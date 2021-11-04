@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:spotify/spotify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 
 //https://pub.dev/documentation/uni_links/latest/ for uni_links
@@ -14,89 +15,74 @@ const String clientSecret = "2bcdc8148d674bfa92507e10280971f4";
 const String redirectURI = "com.example.nearby://callback/success";
 final scopes = ["user-read-email", "user-library-read"];
 
-class Song extends StatefulWidget{
+class Song extends StatefulWidget {
   @override
   _SongState createState() => _SongState();
 }
 
 class _SongState extends State<Song> {
 
-  SpotifyApiCredentials? credentials;
   var spotify;
-  String? responseURI = null;
-  StreamSubscription? subscription;
-  bool checkedInitialUri = false;
-  String? currentLink;
+  var credentials;
 
   @override
   initState() {
-    super.initState();
-    credentials = SpotifyApiCredentials(
-        clientID, clientSecret);
-    spotify = SpotifyApi(credentials!);
-    print("passed spotify credentials, no user yet");
-    initialLink();
-    print('passed initial uri link');
+    credentials = SpotifyApiCredentials(clientID, clientSecret);
+    spotify = SpotifyApi(credentials);
+    print("passed");
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    subscription!.cancel();
+  authenticate() async {
+    final grant = SpotifyApi.authorizationCodeGrant(credentials);
+    const redirectUri = 'nearby:/';
+    final scopes = [
+      'app-remote-control',
+      'user-modify-playback-state',
+      'user-read-private',
+      'playlist-read-private',
+      'playlist-modify-public',
+      "playlist-read-collaborative",
+      'user-read-currently-playing',
+      'user-read-playback-state',
+      'user-follow-read',
+      'playlist-modify-private'
+    ];
+
+    final authUri =
+        grant.getAuthorizationUrl(Uri.parse(redirectUri), scopes: scopes);
+
+    final result = await FlutterWebAuth.authenticate(
+        url: authUri.toString(), callbackUrlScheme: "nearby");
+    final tokens = Uri.parse(result).queryParameters;
+    var client = await grant.handleAuthorizationResponse(tokens);
+    spotify = SpotifyApi.fromClient(client);
   }
-  //checks the initial uri link, called on initState
-  void initialLink() async {
-    if(!checkedInitialUri){
-      checkedInitialUri = true;
-      try {
-        final link = await getInitialLink();
-        if(link == null){
-          print("no initial link");
+
+  Future<void> _currentlyPlaying(SpotifyApi spotify) async =>
+      await spotify.me.currentlyPlaying().then((Player? a) {
+        if (a == null) {
+          print('Nothing currently playing.');
+          return;
         }
-        else{
-          print("initial link is $link");
+        print('Currently playing: ${a.item?.name}');
+      });
+
+  Future<void> _devices(SpotifyApi spotify) async =>
+      await spotify.me.devices().then((Iterable<Device>? devices) {
+        if (devices == null) {
+          print('No devices currently playing.');
+          return;
         }
-        if(!mounted) return;
-        setState(() {
-          currentLink = link;
-        });
-      }on PlatformException{
-        print("failed to get initial link");
-      }on FormatException catch (err){
-        if (!mounted) return;
-        print('malformed initial link');
-      }
-    }
-  }
+        print('Listing ${devices.length} available devices:');
+        print(devices.map((device) => device.name).join(', '));
+      });
 
-  void connectToUser() async{
-    final grant = SpotifyApi.authorizationCodeGrant(credentials!);
-    final authUri = grant.getAuthorizationUrl(Uri.parse(redirectURI), scopes: scopes,);
-    print("authrui is ${authUri.toString()}");
-    //opens browser to take user to spotify authorization page
+  Future<void> _followingArtists(SpotifyApi spotify) async {
+    var cursorPage = spotify.me.following(FollowingType.artist);
+    await cursorPage.first().then((cursorPage) {
+      print(cursorPage.items!.map((artist) => artist.name).join(', '));
+    });
 
-    final result = await canLaunch((authUri.toString()));
-    print('result is $result');
-    if (await canLaunch(authUri.toString())){
-      print("can launch");
-      launch(authUri.toString());
-
-    }
-    print("passed canlaunch");
-    //listen for redirection back to app from authorization page
-    subscription = linkStream.listen((String? link){
-      print("current link is $currentLink");
-      if (link!.startsWith(redirectURI)){
-        setState(() {
-          currentLink = link;
-        });
-         print("success");
-      }
-      }, onError: (err){
-        print("error listening to redirect");
-     });
-    print("passed listen");
   }
 
   @override
@@ -115,23 +101,19 @@ class _SongState extends State<Song> {
                   var album = await spotify.albums.get('1NAmidJlEaVgA3MpcPFYGq?si');
                   print(album.name);
                   //doesn't work, no user
-                  var currently = await spotify.me.currentlyPlaying();
-                  print(currently);
+                  await authenticate();
+                  await _currentlyPlaying(spotify);
+                  await _devices(spotify);
+                  await _followingArtists(spotify);
                 },
                   child: Text("press for api call"),),
-                TextButton(onPressed: () async {
-                  connectToUser();
-                },
-                  child: Text("user log in"),),
               ]
 
     ),
     ),
-
     );
   }
 }
 
 //https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI?si=066eca5b3d534656  lover song
 //https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq?si=DgZmYX14RL2ANQDnd2Vidw
-
