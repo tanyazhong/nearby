@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:spotify/spotify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 const String clientID = "23d2ea2c69e74794b6390d74307a6812";
 const String clientSecret = "5b342954dd284bb18625a596023d526b";
@@ -18,13 +19,17 @@ class _SongState extends State<Song> {
 
   redirect(String authUri) async {
     print("redirecting");
-    await launch(authUri, forceWebView: true);
+    await launch(authUri);
   }
 
   Future<String> listen(redirectUri) async {
-    String? responseUri = "empty string";
-    responseUri = await linkStream.single;
-    return responseUri!;
+    String responseUri = "empty string";
+    final linksStream = linkStream.listen((String? link) async {
+      if (link!.startsWith(redirectUri)) {
+        responseUri = link;
+      }
+    });
+    return responseUri;
   }
 
   @override
@@ -36,7 +41,7 @@ class _SongState extends State<Song> {
 
   authenticate() async {
     final grant = SpotifyApi.authorizationCodeGrant(credentials);
-    const redirectUri = 'https://spotify.com';
+    const redirectUri = 'nearby:/';
     final scopes = [
       'app-remote-control',
       'user-modify-playback-state',
@@ -45,20 +50,45 @@ class _SongState extends State<Song> {
       'playlist-modify-public',
       "playlist-read-collaborative",
       'user-read-currently-playing',
+      'user-read-playback-state',
+      'user-follow-read',
+      'playlist-modify-private'
     ];
 
     final authUri =
         grant.getAuthorizationUrl(Uri.parse(redirectUri), scopes: scopes);
 
-    print(authUri.toString());
-    await redirect(authUri.toString());
-    String responseUri = await listen(redirectUri);
-
-    print(responseUri);
-    var client = await grant
-        .handleAuthorizationResponse(Uri.parse(responseUri).queryParameters);
+    final result = await FlutterWebAuth.authenticate(
+        url: authUri.toString(), callbackUrlScheme: "nearby");
+    final tokens = Uri.parse(result).queryParameters;
+    var client = await grant.handleAuthorizationResponse(tokens);
     spotify = SpotifyApi.fromClient(client);
-    print("passed2");
+  }
+
+  Future<void> _currentlyPlaying(SpotifyApi spotify) async =>
+      await spotify.me.currentlyPlaying().then((Player? a) {
+        if (a == null) {
+          print('Nothing currently playing.');
+          return;
+        }
+        print('Currently playing: ${a.item?.name}');
+      });
+
+  Future<void> _devices(SpotifyApi spotify) async =>
+      await spotify.me.devices().then((Iterable<Device>? devices) {
+        if (devices == null) {
+          print('No devices currently playing.');
+          return;
+        }
+        print('Listing ${devices.length} available devices:');
+        print(devices.map((device) => device.name).join(', '));
+      });
+
+  Future<void> _followingArtists(SpotifyApi spotify) async {
+    var cursorPage = spotify.me.following(FollowingType.artist);
+    await cursorPage.first().then((cursorPage) {
+      print(cursorPage.items!.map((artist) => artist.name).join(', '));
+    });
   }
 
   @override
@@ -79,9 +109,10 @@ class _SongState extends State<Song> {
               var album = await spotify.albums.get('1NAmidJlEaVgA3MpcPFYGq?si');
               print(album.name);
               //doesn't work, no user
-              authenticate();
-              //var currently = await spotify.me.currentlyPlaying();
-              // print(currently);
+              await authenticate();
+              await _currentlyPlaying(spotify);
+              await _devices(spotify);
+              await _followingArtists(spotify);
             },
             child: Text("press for api call"),
           )
