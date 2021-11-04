@@ -7,7 +7,8 @@ class MongoDatabase {
 
   static connect() async {
     log("connecting!");
-    final db = await Db.create("mongodb+srv://root:nEARby1234@cluster0.ghrni.mongodb.net/nearby?retryWrites=true&w=majority");
+    String mongourl = "";
+    final db = await Db.create(mongourl);
     await db.open();
     userCollection = db.collection("nearbyTest");
     log("async");
