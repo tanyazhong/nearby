@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/pages/MongoDBPage.dart';
-
+import 'package:my_app/pages/grid_view_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'This should be LoginPage'),
+        '/grid_view': (context) => const GridViewPage(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'This should be LoginPage'),
+      // home: const MyHomePage(title: 'This should be LoginPage'),
     );
   }
 }
@@ -50,7 +55,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -68,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+
         child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
@@ -88,7 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'Click the + to go to the mongodb page',
             ),
-
+            ElevatedButton(
+              // Within the SecondScreen widget
+              onPressed: () {
+                // Navigate back to the first screen by popping the current route
+                // off the stack.
+                Navigator.pushNamed(context, '/grid_view');
+              },
+              child: const Text('Go To Grid View'),
+            ),
           ],
         ),
       ),
@@ -102,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ).then((value) => setState(() {}));
-        } ,
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
