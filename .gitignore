@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+.idea/libraries/Dart_Packages.xml
+.idea/libraries/Dart_SDK.xml
+.idea/modules.xml
+.idea/nearby.iml
+.idea/vcs.xml
+.idea/workspace.xml

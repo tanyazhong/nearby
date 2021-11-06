@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
+import 'package:my_app/location/location_stuff.dart';
 
 void main() {
   runApp(const MyApp());
@@ -101,6 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, '/grid_view');
               },
               child: const Text('Go To Grid View'),
+            ),
+            ElevatedButton(
+              onPressed: (){
+                // print location to console
+                var pleaseWork = locate();
+                pleaseWork.printLocation();
+              },
+              child: const Text('print location'),
             ),
           ],
         ),
