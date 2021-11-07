@@ -3,86 +3,34 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_app/api.dart';
 import 'package:spotify/spotify.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:uni_links/uni_links.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
-//https://pub.dev/documentation/uni_links/latest/ for uni_links
-const String clientID = "b03425c1e1af4ba1bc82f71a5bc0875b";
-const String clientSecret = "2bcdc8148d674bfa92507e10280971f4";
-const String redirectURI = "com.example.nearby://callback/success";
-final scopes = ["user-read-email", "user-library-read"];
 
-class Song extends StatefulWidget {
+class Song extends StatefulWidget{
+  final SpotifyApi spotify;
+  final Track track;
+  const Song({Key? key, required this.spotify, required this.track}): super(key: key);
+
   @override
-  _SongState createState() => _SongState();
+  _SongState createState() => _SongState(spotify: spotify, track: track);
 }
 
 class _SongState extends State<Song> {
 
-  var spotify;
-  var credentials;
+  SpotifyApi spotify;
+  Track track;
+  _SongState({required this.spotify, required this.track});
+  String? imageUrl;
 
   @override
-  initState() {
-    credentials = SpotifyApiCredentials(clientID, clientSecret);
-    spotify = SpotifyApi(credentials);
-    print("passed");
-  }
-
-  authenticate() async {
-    final grant = SpotifyApi.authorizationCodeGrant(credentials);
-    const redirectUri = 'nearby:/';
-    final scopes = [
-      'app-remote-control',
-      'user-modify-playback-state',
-      'user-read-private',
-      'playlist-read-private',
-      'playlist-modify-public',
-      "playlist-read-collaborative",
-      'user-read-currently-playing',
-      'user-read-playback-state',
-      'user-follow-read',
-      'playlist-modify-private'
-    ];
-
-    final authUri =
-        grant.getAuthorizationUrl(Uri.parse(redirectUri), scopes: scopes);
-
-    final result = await FlutterWebAuth.authenticate(
-        url: authUri.toString(), callbackUrlScheme: "nearby");
-    final tokens = Uri.parse(result).queryParameters;
-    var client = await grant.handleAuthorizationResponse(tokens);
-    spotify = SpotifyApi.fromClient(client);
-  }
-
-  Future<void> _currentlyPlaying(SpotifyApi spotify) async =>
-      await spotify.me.currentlyPlaying().then((Player? a) {
-        if (a == null) {
-          print('Nothing currently playing.');
-          return;
-        }
-        print('Currently playing: ${a.item?.name}');
-      });
-
-  Future<void> _devices(SpotifyApi spotify) async =>
-      await spotify.me.devices().then((Iterable<Device>? devices) {
-        if (devices == null) {
-          print('No devices currently playing.');
-          return;
-        }
-        print('Listing ${devices.length} available devices:');
-        print(devices.map((device) => device.name).join(', '));
-      });
-
-  Future<void> _followingArtists(SpotifyApi spotify) async {
-    var cursorPage = spotify.me.following(FollowingType.artist);
-    await cursorPage.first().then((cursorPage) {
-      print(cursorPage.items!.map((artist) => artist.name).join(', '));
-    });
-
+  initState(){
+    AlbumSimple album = track.album!;
+    imageUrl = API().imageUrl(album);
+    print('image url is $imageUrl');
   }
 
   @override
@@ -91,29 +39,21 @@ class _SongState extends State<Song> {
       appBar: AppBar(
         title: Text('Song'),
       ),
-        body: Center(
-          child: Column(
-              children:[
-                TextButton(onPressed: () {
-                  Navigator.pop(context);
-                }, child: Text("go back")),
-                TextButton(onPressed: () async {
-                  var album = await spotify.albums.get('1NAmidJlEaVgA3MpcPFYGq?si');
-                  print(album.name);
-                  //doesn't work, no user
-                  await authenticate();
-                  await _currentlyPlaying(spotify);
-                  await _devices(spotify);
-                  await _followingArtists(spotify);
-                },
-                  child: Text("press for api call"),),
-              ]
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child:
+                  FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage, image: imageUrl!),
+              ),
+              Text('${track.name}', style: GoogleFonts.acme()),
+            ]
 
-    ),
-    ),
+        ),
+      ),
     );
   }
 }
-
-//https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI?si=066eca5b3d534656  lover song
-//https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq?si=DgZmYX14RL2ANQDnd2Vidw

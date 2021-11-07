@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'api.dart';
 import 'song.dart';
+import 'package:spotify/spotify.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -49,7 +52,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  SpotifyApi? spotify;
+  Track? track;
+  API? apiInstance;
+  bool trackSet = false;
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -59,6 +65,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+  @override
+  initState() {
+    apiInstance =  API();
+  }
+
+  void getCurrentTrack()  {
+    print('entering getcurrentrack, spotify is $spotify');
+    if (apiInstance == null){
+      print('api null');
+    }
+    apiInstance!.currentlyPlaying().then((value){
+      print('inside then');
+      setState(() {
+        track = value;
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
+      });
+      print( 'track is $track');
+    });
+    print('returning from getCurrentTrack');
   }
 
   @override
@@ -102,8 +128,15 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            TextButton(onPressed: () async{
+              spotify = apiInstance!.authenticate();
+                             print('null track is $track');
+              },
+
+              child: Text("log in"),),
             TextButton(onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Song())); },
+              getCurrentTrack();
+            },
                 child: Text("go to song page")),
 
           ],
