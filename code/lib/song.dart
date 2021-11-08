@@ -33,6 +33,26 @@ class _SongState extends State<Song> {
     print('image url is $imageUrl');
   }
 
+  Widget artistList() {
+    List<Widget> list =  [];
+    String? temp;
+    int length = track.artists!.length;
+    if (length == 0){
+      return Text('Artist not available');
+    }
+    for (int i = 0; i< length; i++){
+      if (i == length -1){
+        temp = track.artists![i].name;
+      }
+      else{
+        temp = track.artists![i].name! + ', ';
+      }
+      list.add(Text(temp!, style: GoogleFonts.acme(fontSize: 20),));
+    }
+    return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+   // return Row(children: track.artists!.map((artist) =>  Text('${artist.name}', style: GoogleFonts.acme(fontSize: 20),)).toList());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,15 +61,18 @@ class _SongState extends State<Song> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+              Padding(
+                padding: EdgeInsets.all(20),
                 child:
-                  FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage, image: imageUrl!),
-              ),
-              Text('${track.name}', style: GoogleFonts.acme()),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    child:
+                      FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageUrl!),
+              )),
+              Text('${track.name}', style: GoogleFonts.acme(fontSize: 30), textAlign: TextAlign.center,),
+              artistList(),
             ]
 
         ),
