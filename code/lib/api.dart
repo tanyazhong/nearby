@@ -22,11 +22,15 @@ class API  {
   String? albumID;
   var currentTrack;
 
-
-
   SpotifyApi authenticate() {
+    credentials = SpotifyApiCredentials(clientID, clientSecret);
+    spotify = SpotifyApi(credentials);
+    return spotify;
+  }
+
+  SpotifyApi authenticateUser() {
     print('big authenticate');
-    _authenticate().then((value){
+    _authenticateUser().then((value){
       spotify = value;
     },onError: (error){
       print(error);
@@ -35,7 +39,7 @@ class API  {
     return spotify;
   }
 
-  Future<SpotifyApi> _authenticate() async  {
+  Future<SpotifyApi> _authenticateUser() async  {
     print('trying to run api auth');
     credentials = SpotifyApiCredentials(clientID, clientSecret);
     spotify = SpotifyApi(credentials);

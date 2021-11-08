@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'api.dart';
-import 'song.dart';
+import 'pages/song.dart';
 import 'package:spotify/spotify.dart';
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go To Grid View'),
             ),
             TextButton(onPressed: () async{
-              spotify = apiInstance!.authenticate();
+              spotify = apiInstance!.authenticateUser();
                              print('null track is $track');
               },
 
