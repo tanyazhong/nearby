@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'api.dart';
 import 'song.dart';
 import 'package:spotify/spotify.dart';
+import 'package:my_app/pages/MongoDBPage.dart';
+import 'package:my_app/pages/grid_view_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'This should be LoginPage'),
+        '/grid_view': (context) => const GridViewPage(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'This should be LoginPage'),
     );
   }
 }
@@ -87,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('returning from getCurrentTrack');
   }
 
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -104,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+
         child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
@@ -122,11 +131,16 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have clicked the button this many times:',
+              'Click the + to go to the mongodb page',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ElevatedButton(
+              // Within the SecondScreen widget
+              onPressed: () {
+                // Navigate back to the first screen by popping the current route
+                // off the stack.
+                Navigator.pushNamed(context, '/grid_view');
+              },
+              child: const Text('Go To Grid View'),
             ),
             TextButton(onPressed: () async{
               spotify = apiInstance!.authenticate();
@@ -134,16 +148,22 @@ class _MyHomePageState extends State<MyHomePage> {
               },
 
               child: Text("log in"),),
-            TextButton(onPressed: () {
-              getCurrentTrack();
-            },
-                child: Text("go to song page")),
+
 
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return MongoDBPage();
+              },
+            ),
+          ).then((value) => setState(() {}));
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

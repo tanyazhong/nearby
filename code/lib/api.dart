@@ -72,22 +72,6 @@ class API  {
     return spotify;
   }
 
-    Future<Track> _currentlyPlaying( SpotifyApi spotify) async {
-    Track? track;
-    print('beofre calling _current');
-    await _currentlyPlaying(spotify);
-    print('moved on, current track is $currentTrack');
-    if(currentTrack == null){
-      spotify.tracks.get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f').then((value){
-        track = value;
-        print('null track is $track');
-      });
-    }else{
-      track = currentTrack;
-    }
-    print('returning from currentlyPlaying, track is $track');
-    return track!;
-  }
 
 
   Future<Track> currentlyPlaying() async {

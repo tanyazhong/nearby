@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:my_app/api.dart';
 import 'package:spotify/spotify.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 
 
@@ -47,7 +47,7 @@ class _SongState extends State<Song> {
       else{
         temp = track.artists![i].name! + ', ';
       }
-      list.add(Text(temp!, style: GoogleFonts.acme(fontSize: 20),));
+      list.add(Text(temp!, style: TextStyle(fontFamily: 'Acme', fontSize: 20),));
     }
     return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
    // return Row(children: track.artists!.map((artist) =>  Text('${artist.name}', style: GoogleFonts.acme(fontSize: 20),)).toList());
@@ -71,7 +71,7 @@ class _SongState extends State<Song> {
                     child:
                       FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageUrl!),
               )),
-              Text('${track.name}', style: GoogleFonts.acme(fontSize: 30), textAlign: TextAlign.center,),
+              Text('${track.name}', style: TextStyle(fontFamily: 'Acme', fontSize: 30,), textAlign: TextAlign.center,),
               artistList(),
             ]
 
