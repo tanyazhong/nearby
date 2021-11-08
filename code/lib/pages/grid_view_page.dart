@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/logic/database.dart';
 
 class GridViewPage extends StatefulWidget {
   const GridViewPage({Key? key}) : super(key: key);
@@ -16,9 +17,17 @@ class _GridViewPageState extends State<GridViewPage> {
       textToShow = "Flutter is Awesome!";
     });
   }
+  Future<List<dynamic>> getNearbySongsForLoc(double lat, double lon) async {
+    List<dynamic> results = [];
+    Map<dynamic, dynamic> documents = await MongoDatabase.getDocuments();
+    debugPrint("hi doc $documents");
 
+    // get songs 
+    return results;
+  }
   @override
   Widget build(BuildContext context) {
+    getNearbySongsForLoc(100, 100);
     return Scaffold(
       appBar: AppBar(
         title: Text("Grid View"),
