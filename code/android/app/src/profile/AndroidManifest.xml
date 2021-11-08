@@ -4,4 +4,7 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- below query added for url_launcher so that we can redirect the spotify authentication page
+    back to our app -->
+
 </manifest>

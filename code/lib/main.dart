@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'api.dart';
+import 'pages/song.dart';
+import 'package:spotify/spotify.dart';
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
 
@@ -55,6 +58,43 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  SpotifyApi? spotify;
+  Track? track;
+  API? apiInstance;
+  bool trackSet = false;
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+  }
+  @override
+  initState() {
+    apiInstance =  API();
+  }
+
+  void getCurrentTrack()  {
+    print('entering getcurrentrack, spotify is $spotify');
+    if (apiInstance == null){
+      print('api null');
+    }
+    apiInstance!.currentlyPlaying().then((value){
+      print('inside then');
+      setState(() {
+        track = value;
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
+      });
+      print( 'track is $track');
+    });
+    print('returning from getCurrentTrack');
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -102,6 +142,14 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text('Go To Grid View'),
             ),
+            TextButton(onPressed: () async{
+              spotify = apiInstance!.authenticateUser();
+                             print('null track is $track');
+              },
+
+              child: Text("log in"),),
+
+
           ],
         ),
       ),
