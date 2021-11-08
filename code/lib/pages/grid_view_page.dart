@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/logic/database.dart';
+import 'package:spotify/spotify.dart';
+import 'song.dart';
+import 'package:my_app/api.dart';
 
 class GridViewPage extends StatefulWidget {
   const GridViewPage({Key? key}) : super(key: key);
@@ -21,10 +24,18 @@ class _GridViewPageState extends State<GridViewPage> {
     List<dynamic> results = [];
     Map<dynamic, dynamic> documents = await MongoDatabase.getDocuments();
     debugPrint("hi doc $documents");
-
-    // get songs 
     return results;
   }
+  void goToSongPage(){
+    SpotifyApi spotify = API().authenticate();
+    Track? track;
+    spotify.tracks.get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f').then((value){
+      track = value;
+      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify, track: track!,),),);
+
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     getNearbySongsForLoc(100, 100);
@@ -42,7 +53,10 @@ class _GridViewPageState extends State<GridViewPage> {
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(8),
-            child: const Text('Heed not the rabble'),
+            child:  TextButton(onPressed: () {
+              goToSongPage();
+            },
+                child: const Text('Heed not the rabble', style: TextStyle(color: Colors.black))),
             color: Colors.teal[200],
           ),
           Container(
