@@ -4,7 +4,7 @@ import 'song.dart';
 import 'package:my_app/api.dart';
 
 class GridViewPage extends StatefulWidget {
-  const GridViewPage({Key? key}) : super(key: key);
+  const GridViewPage({Key? key, required}) : super(key: key);
 
   @override
   _GridViewPageState createState() => _GridViewPageState();
@@ -19,18 +19,18 @@ class _GridViewPageState extends State<GridViewPage> {
       textToShow = "Flutter is Awesome!";
     });
   }
-  void goToSongPage(){
-    SpotifyApi spotify = API().authenticate();
+  void goToSongPage(SpotifyApi spotify){
     Track? track;
     spotify.tracks.get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f').then((value){
       track = value;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify, track: track!,),),);
+      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(track: track!,),),);
 
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final argumentSpotify = ModalRoute.of(context)!.settings.arguments as SpotifyApi;
     return Scaffold(
       appBar: AppBar(
         title: Text("Grid View"),
@@ -46,7 +46,7 @@ class _GridViewPageState extends State<GridViewPage> {
           Container(
             padding: const EdgeInsets.all(8),
             child:  TextButton(onPressed: () {
-              goToSongPage();
+              goToSongPage(argumentSpotify);
             },
                 child: const Text('Heed not the rabble', style: TextStyle(color: Colors.black))),
             color: Colors.teal[200],

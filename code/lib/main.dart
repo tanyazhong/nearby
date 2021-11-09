@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'api.dart';
 import 'pages/song.dart';
 import 'package:spotify/spotify.dart';
+import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +15,20 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  final Map<int,Color> shadesOfGreen = const
+  {
+    50: const Color.fromRGBO(93, 176, 117, .1),
+    100:const Color.fromRGBO(93, 176, 117, .2),
+    200:const Color.fromRGBO(93, 176, 117, .3),
+    300:const Color.fromRGBO(93, 176, 117, .4),
+    400:const Color.fromRGBO(93, 176, 117, .5),
+    500:const Color.fromRGBO(93, 176, 117, .6),
+    600:const Color.fromRGBO(93, 176, 117, .7),
+    700:const Color.fromRGBO(93, 176, 117, .8),
+    800:const Color.fromRGBO(93, 176, 117, .9),
+    900:const Color.fromRGBO(93, 176, 117, 1),
+
+  };
 
   // This widget is the root of your application.
   @override
@@ -19,8 +37,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'This should be LoginPage'),
-        '/grid_view': (context) => const GridViewPage(),
+        '/': (context) => const MyHomePage(title: 'Welcome!'),
+        '/grid_view': (context) =>  GridViewPage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -32,7 +50,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: MaterialColor(0xFF5DB075, shadesOfGreen),
+        scaffoldBackgroundColor: Color(0xFFFFFFFF),
       ),
       // home: const MyHomePage(title: 'This should be LoginPage'),
     );
@@ -78,22 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
     apiInstance =  API();
   }
 
-  void getCurrentTrack()  {
-    print('entering getcurrentrack, spotify is $spotify');
-    if (apiInstance == null){
-      print('api null');
-    }
-    apiInstance!.currentlyPlaying().then((value){
-      print('inside then');
-      setState(() {
-        track = value;
-        Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
-      });
-      print( 'track is $track');
-    });
-    print('returning from getCurrentTrack');
+  void share() {
+    SpotifyApi spotify = apiInstance!.authenticateUser();
+    Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
+  void lurk() {
+    SpotifyApi spotify = apiInstance!.authenticate();
+    Navigator.pushNamed(context, '/grid_view', arguments: spotify);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(color: Colors.black, fontSize: 35), textAlign: TextAlign.center,),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.transparent,
+        centerTitle: true,
+        toolbarHeight: 80,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -128,26 +144,26 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(15),
+              color: Color.fromRGBO(169,209, 142 ,1),
+              child: widgets.Image.asset("assets/nearby_logo.png", alignment: Alignment.center, scale: .8,),
+            ),
+            ElevatedButton(onPressed: share, child: Text("Share!", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
+              fixedSize: const Size(330, 50),
+
+            ),),
+
+            ElevatedButton(onPressed: lurk, child: Text("Lurk", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
+            fixedSize: const Size(330, 50),
+            ),),
             const Text(
               'Click the + to go to the mongodb page',
             ),
-            ElevatedButton(
-              // Within the SecondScreen widget
-              onPressed: () {
-                // Navigate back to the first screen by popping the current route
-                // off the stack.
-                Navigator.pushNamed(context, '/grid_view');
-              },
-              child: const Text('Go To Grid View'),
-            ),
-            TextButton(onPressed: () async{
-              spotify = apiInstance!.authenticateUser();
-                             print('null track is $track');
-              },
-
-              child: Text("log in"),),
 
 
           ],
