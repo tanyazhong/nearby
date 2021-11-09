@@ -164,8 +164,6 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'Click the + to go to the mongodb page',
             ),
-
-
           ],
         ),
       ),
