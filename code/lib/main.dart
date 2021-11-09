@@ -17,19 +17,17 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  final Map<int,Color> shadesOfGreen = const
-  {
+  final Map<int, Color> shadesOfGreen = const {
     50: const Color.fromRGBO(93, 176, 117, .1),
-    100:const Color.fromRGBO(93, 176, 117, .2),
-    200:const Color.fromRGBO(93, 176, 117, .3),
-    300:const Color.fromRGBO(93, 176, 117, .4),
-    400:const Color.fromRGBO(93, 176, 117, .5),
-    500:const Color.fromRGBO(93, 176, 117, .6),
-    600:const Color.fromRGBO(93, 176, 117, .7),
-    700:const Color.fromRGBO(93, 176, 117, .8),
-    800:const Color.fromRGBO(93, 176, 117, .9),
-    900:const Color.fromRGBO(93, 176, 117, 1),
-
+    100: const Color.fromRGBO(93, 176, 117, .2),
+    200: const Color.fromRGBO(93, 176, 117, .3),
+    300: const Color.fromRGBO(93, 176, 117, .4),
+    400: const Color.fromRGBO(93, 176, 117, .5),
+    500: const Color.fromRGBO(93, 176, 117, .6),
+    600: const Color.fromRGBO(93, 176, 117, .7),
+    700: const Color.fromRGBO(93, 176, 117, .8),
+    800: const Color.fromRGBO(93, 176, 117, .9),
+    900: const Color.fromRGBO(93, 176, 117, 1),
   };
 
   // This widget is the root of your application.
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: 'Welcome!'),
-        '/grid_view': (context) =>  GridViewPage(),
+        '/grid_view': (context) => GridViewPage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -94,13 +92,16 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
   @override
   initState() {
-    apiInstance =  API();
+    apiInstance = API();
   }
 
-  void share() {
-    SpotifyApi spotify = apiInstance!.authenticateUser();
+  void share() async {
+    SpotifyApi spotify = await apiInstance!.authenticateUser();
+    var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
+    print(recentlyPlayed.map((song) => song.track!.name).join(', '));
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
@@ -121,7 +122,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title, style: TextStyle(color: Colors.black, fontSize: 35), textAlign: TextAlign.center,),
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.black, fontSize: 35),
+          textAlign: TextAlign.center,
+        ),
         backgroundColor: Colors.white,
         shadowColor: Colors.transparent,
         centerTitle: true,
@@ -150,41 +155,55 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.all(15),
-              color: Color.fromRGBO(169,209, 142 ,1),
-              child: widgets.Image.asset("assets/nearby_logo.png", alignment: Alignment.center, scale: .8,),
+              color: Color.fromRGBO(169, 209, 142, 1),
+              child: widgets.Image.asset(
+                "assets/nearby_logo.png",
+                alignment: Alignment.center,
+                scale: .8,
+              ),
             ),
-            ElevatedButton(onPressed: share, child: Text("Share!", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
-              fixedSize: const Size(330, 50),
-
-            ),),
-
-            ElevatedButton(onPressed: lurk, child: Text("Lurk", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
-            fixedSize: const Size(330, 50),
-            ),),
+            ElevatedButton(
+              onPressed: share,
+              child: Text("Share!",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: lurk,
+              child: Text("Lurk",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
             const Text(
               'Click the + to go to the mongodb page',
             ),
+            ElevatedButton(
+              onPressed: () async {
+                var pleaseWork = locate();
+                // waits until location service is enabled
+                pleaseWork.checkLocationService();
 
-          ElevatedButton(
-            onPressed: () async{
-              var pleaseWork = locate();
-              // waits until location service is enabled
-              pleaseWork.checkLocationService();
+                // waits until user gives their permission to share location
+                pleaseWork.checkPermission();
 
-              // waits until user gives their permission to share location
-              pleaseWork.checkPermission();
+                // finding user location
+                LocationData loc = await pleaseWork.findLocation();
 
-              // finding user location
-              LocationData loc = await pleaseWork.findLocation();
-
-              // can push back loc.latitude and loc.longitude onto latLon object
-              print(loc);
-            },
-            child: const Text('print location'),
-          ),
-
+                // can push back loc.latitude and loc.longitude onto latLon object
+                print(loc);
+              },
+              child: const Text('print location'),
+            ),
           ],
         ),
       ),
