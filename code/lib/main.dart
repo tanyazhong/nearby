@@ -8,6 +8,8 @@ import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:my_app/locate.dart';
+import 'package:location/location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -165,6 +167,23 @@ class _MyHomePageState extends State<MyHomePage> {
               'Click the + to go to the mongodb page',
             ),
 
+          ElevatedButton(
+            onPressed: () async{
+              var pleaseWork = locate();
+              // waits until location service is enabled
+              pleaseWork.checkLocationService();
+
+              // waits until user gives their permission to share location
+              pleaseWork.checkPermission();
+
+              // finding user location
+              LocationData loc = await pleaseWork.findLocation();
+
+              // can push back loc.latitude and loc.longitude onto latLon object
+              print(loc);
+            },
+            child: const Text('print location'),
+          ),
 
           ],
         ),

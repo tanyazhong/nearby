@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   mongo_dart: ^0.7.3
+  location: ^4.3.0
   flutter:
     sdk: flutter
 
