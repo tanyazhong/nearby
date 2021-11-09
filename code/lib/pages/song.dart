@@ -11,19 +11,17 @@ import 'package:transparent_image/transparent_image.dart';
 
 
 class Song extends StatefulWidget{
-  final SpotifyApi spotify;
   final Track track;
-  const Song({Key? key, required this.spotify, required this.track}): super(key: key);
+  const Song({Key? key, required this.track}): super(key: key);
 
   @override
-  _SongState createState() => _SongState(spotify: spotify, track: track);
+  _SongState createState() => _SongState( track: track);
 }
 
 class _SongState extends State<Song> {
 
-  SpotifyApi spotify;
   Track track;
-  _SongState({required this.spotify, required this.track});
+  _SongState({ required this.track});
   String? imageUrl;
 
   @override
@@ -80,3 +78,21 @@ class _SongState extends State<Song> {
     );
   }
 }
+
+/*
+void getCurrentTrack()  {
+  print('entering getcurrentrack, spotify is $spotify');
+  if (apiInstance == null){
+    print('api null');
+  }
+  apiInstance!.currentlyPlaying().then((value){
+    print('inside then');
+    setState(() {
+      track = value;
+      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
+    });
+    print( 'track is $track');
+  });
+  print('returning from getCurrentTrack');
+}
+*/
