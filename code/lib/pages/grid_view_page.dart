@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:my_app/logic/database.dart';
 import 'package:spotify/spotify.dart';
+import 'filter_page.dart';
 import 'song.dart';
 import 'package:my_app/api.dart';
 
@@ -15,6 +16,9 @@ class GridViewPage extends StatefulWidget {
 class _GridViewPageState extends State<GridViewPage> {
   // Default placeholder text
   String textToShow = "I Like Flutter";
+  double _radius = 5;
+  bool _gridView = true;
+
   void _updateText() {
     setState(() {
       // update the text
@@ -60,13 +64,36 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
+  void _onRadiusChanged(FilterValues values){
+    setState(() {
+      _radius = values.radius;
+      _gridView = values.gridView;
+    });
+    print('radius is $_radius, grid view is $_gridView');
+  }
+
   @override
   Widget build(BuildContext context) {
     final argumentSpotify = ModalRoute.of(context)!.settings.arguments as SpotifyApi;
+    FilterValues filterValues = FilterValues();
     getNearbySongsForLoc(100, 100, 10);
     return Scaffold(
       appBar: AppBar(
         title: Text("Grid View"),
+        actions: [
+          Padding(padding: EdgeInsets.only(right: 20, top: 18),
+               child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => FilterPage(
+                      filterValues: filterValues,
+                      onChanged: _onRadiusChanged,
+                    )
+                    ));
+                  },
+                  child: Text('Filter', style: TextStyle(fontSize: 15, color: Colors.white),)
+              )
+          )
+        ],
       ),
       body: Center(
           child: GridView.count(
