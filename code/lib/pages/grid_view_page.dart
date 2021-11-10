@@ -26,45 +26,24 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
-  double degreesToRadians(double degree) {
-    return (degree * pi / 180);
-  }
-
-  bool withinDistance(double lat1, double lon1, double lat2, double lon2, double distance) {
-    // dist = arccos(sin(lat1) · sin(lat2) + cos(lat1) · cos(lat2) · cos(lon1 - lon2)) · R
-    final R = 6371; // Earth has radius 6371KM
-    double d = acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon1 - lon2)) * R;
-    if (d < distance) {
-      return true;
-    }
-    return false;
-  }
-  Future<List<dynamic>> getNearbySongsForLoc(double lat, double lon, double distance) async {
-    List<dynamic> results = [];
-    Map<dynamic, dynamic> documents = await MongoDatabase.getDocuments();
-    debugPrint("hi doc $documents");
-
-    Iterable<dynamic> coordinates = documents.keys;
-    for (var coord in coordinates) {
-      dynamic cur = coord.split(",");
-      double curLat = degreesToRadians(double.parse(cur[0]));
-      double curLon = degreesToRadians(double.parse(cur[1]));
-      if (withinDistance(degreesToRadians(lat), degreesToRadians(lon), curLat, curLon, distance)) {
-        results.add(coord);
-      }
-    }
-    return results;
-  }
-  void goToSongPage(SpotifyApi spotify){
+  void goToSongPage(SpotifyApi spotify) {
     Track? track;
-    spotify.tracks.get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f').then((value){
+    spotify.tracks
+        .get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f')
+        .then((value) {
       track = value;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(track: track!,),),);
-
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Song(
+            track: track!,
+          ),
+        ),
+      );
     });
   }
 
-  void _onRadiusChanged(FilterValues values){
+  void _onRadiusChanged(FilterValues values) {
     setState(() {
       _radius = values.radius;
       _gridView = values.gridView;
@@ -74,25 +53,32 @@ class _GridViewPageState extends State<GridViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    final argumentSpotify = ModalRoute.of(context)!.settings.arguments as SpotifyApi;
+    final argumentSpotify =
+        ModalRoute.of(context)!.settings.arguments as SpotifyApi;
     FilterValues filterValues = FilterValues();
-    getNearbySongsForLoc(100, 100, 10);
+    Future<List<dynamic>> nearbySongIds =
+        MongoDatabase.getNearbySongsForLoc(100, 100, 10);
+    print("song ids $nearbySongIds");
     return Scaffold(
       appBar: AppBar(
         title: Text("Grid View"),
         actions: [
-          Padding(padding: EdgeInsets.only(right: 20, top: 18),
-               child: GestureDetector(
+          Padding(
+              padding: EdgeInsets.only(right: 20, top: 18),
+              child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => FilterPage(
-                      filterValues: filterValues,
-                      onChanged: _onRadiusChanged,
-                    )
-                    ));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => FilterPage(
+                                  filterValues: filterValues,
+                                  onChanged: _onRadiusChanged,
+                                )));
                   },
-                  child: Text('Filter', style: TextStyle(fontSize: 15, color: Colors.white),)
-              )
-          )
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  )))
         ],
       ),
       body: Center(
@@ -106,10 +92,12 @@ class _GridViewPageState extends State<GridViewPage> {
           Container(
             padding: const EdgeInsets.all(8),
             alignment: Alignment.topLeft,
-            child:  TextButton(onPressed: () {
-              goToSongPage(argumentSpotify);
-            },
-                child: const Text('Heed not the rabble', style: TextStyle(color: Colors.black))),
+            child: TextButton(
+                onPressed: () {
+                  goToSongPage(argumentSpotify);
+                },
+                child: const Text('Heed not the rabble',
+                    style: TextStyle(color: Colors.black))),
             color: Colors.teal[200],
           ),
           Container(
