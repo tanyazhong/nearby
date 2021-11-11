@@ -1,9 +1,11 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_app/logic/database.dart';
 import 'package:spotify/spotify.dart';
 import 'filter_page.dart';
 import 'song.dart';
+import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/api.dart';
 
 class GridViewPage extends StatefulWidget {
@@ -26,11 +28,9 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
-  void goToSongPage(SpotifyApi spotify) {
+  void goToSongPage(SpotifyApi spotify, String songID) {
     Track? track;
-    spotify.tracks
-        .get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f')
-        .then((value) {
+    spotify.tracks.get(songID).then((value) {
       track = value;
       Navigator.push(
         context,
@@ -48,23 +48,21 @@ class _GridViewPageState extends State<GridViewPage> {
       _radius = values.radius;
       _gridView = values.gridView;
     });
-    print('radius is $_radius, grid view is $_gridView');
+    debugPrint('radius is $_radius, grid view is $_gridView');
   }
 
+// https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html
   @override
   Widget build(BuildContext context) {
     final argumentSpotify =
         ModalRoute.of(context)!.settings.arguments as SpotifyApi;
     FilterValues filterValues = FilterValues();
-    Future<List<dynamic>> nearbySongIds =
-        MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 2);
-    print("song ids $nearbySongIds");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Grid View"),
+        title: const Text("Grid View"),
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20, top: 18),
+              padding: const EdgeInsets.only(right: 20, top: 18),
               child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -75,127 +73,104 @@ class _GridViewPageState extends State<GridViewPage> {
                                   onChanged: _onRadiusChanged,
                                 )));
                   },
-                  child: Text(
+                  child: const Text(
                     'Filter',
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   )))
         ],
       ),
-      body: Center(
-          child: GridView.count(
-        primary: false,
-        padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 3,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8),
-            alignment: Alignment.topLeft,
-            child: TextButton(
-                onPressed: () {
-                  goToSongPage(argumentSpotify);
-                },
-                child: const Text('Heed not the rabble',
-                    style: TextStyle(color: Colors.black))),
-            color: Colors.teal[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Sound of screams but the'),
-            color: Colors.teal[300],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Who scream'),
-            color: Colors.teal[400],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Colors.teal[500],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Colors.teal[600],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text("He'd have you all unravel at the"),
-            color: Colors.teal[100],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Heed not the rabble'),
-            color: Colors.teal[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Sound of screams but the'),
-            color: Colors.teal[300],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Who scream'),
-            color: Colors.teal[400],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Colors.teal[500],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Colors.teal[600],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Who scream'),
-            color: Colors.teal[400],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Colors.teal[500],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Colors.teal[600],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Colors.teal[500],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Colors.teal[600],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Who scream'),
-            color: Colors.teal[400],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Colors.teal[500],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Colors.teal[600],
-          ),
-        ],
-      )),
+      body: FutureBuilder<dynamic>(
+        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[];
+            List<dynamic> data = snapshot.data;
+            debugPrint("data: ${snapshot.data}");
+            return Center(
+              child:
+                  // Text(
+                  //   'Result: ${snapshot.data}',
+                  // ),
+                  GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              childAspectRatio: 3 / 2,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return Container(
+                          padding: const EdgeInsets.all(2),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    goToSongPage(argumentSpotify, data[index][0]);
+                                  },
+                                  child: widgets.Image.asset(
+                                      "assets/nearby_logo.png",
+                                      alignment: Alignment.center,
+                                      height: 75,
+                                      width: 75)),
+                              const Text(
+                                'Song Title',
+                                textAlign: TextAlign.left,
+                              ),
+                              const Text(
+                                'Song Artist',
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                          color: Colors.white,
+                        );
+                      }),
+            );
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Text('Error: ${snapshot.error}'),
+            ];
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
+            );
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              )
+            ];
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
+            );
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _updateText,
         tooltip: 'Update Text',
-        child: Icon(Icons.library_music),
+        child: const Icon(Icons.library_music),
       ),
     );
   }
