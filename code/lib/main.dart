@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/pages/profile_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'api.dart';
 import 'pages/song.dart';
@@ -7,7 +8,6 @@ import 'package:spotify/spotify.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:my_app/locate.dart';
 import 'package:location/location.dart';
 
@@ -99,6 +99,18 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
+  void profile() {
+    SpotifyApi spotify = apiInstance!.authenticate();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return ProfilePage();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -151,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 scale: .8,
               ),
             ),
+
             ElevatedButton(
               onPressed: share,
               child: Text("Share!",
@@ -173,6 +186,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 fixedSize: const Size(330, 50),
               ),
             ),
+
+            // testing profile page with this button, we can move it elsewhere for the final product.
+            ElevatedButton(
+              onPressed: profile,
+              child: Text("Profile",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
+
             const Text(
               'Click the + to go to the mongodb page',
             ),
