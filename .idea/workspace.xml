@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f606178-8a21-4373-ab12-e41613b0dc17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/lib/pages/profile_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/lib/user_profile/app_bar.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/lib/user_profile/profile_widget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/lib/user_profile/user.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/code/lib/user_profile/user_preferences.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/code/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

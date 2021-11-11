@@ -107,3 +107,4 @@ dist
 .idea/nearby.iml
 .idea/workspace.xml
 *.xml
+.idea/workspace.xml
