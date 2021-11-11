@@ -9,21 +9,24 @@ import 'package:transparent_image/transparent_image.dart';
 
 
 
-
+///Represents the page that will display a song
 class Song extends StatefulWidget{
   final Track track;
   const Song({Key? key, required this.track}): super(key: key);
 
   @override
+  ///Creates mutable state for Song at a given location in the tree
   _SongState createState() => _SongState( track: track);
 }
 
+///Class that holds the state of [Song] and displays the song page
 class _SongState extends State<Song> {
 
   Track track;
   _SongState({ required this.track});
   String? imageUrl;
 
+  ///Retrieves the url of the image of the designated track from the [API class]
   @override
   initState(){
     AlbumSimple album = track.album!;
@@ -31,6 +34,7 @@ class _SongState extends State<Song> {
     print('image url is $imageUrl');
   }
 
+  ///Displays the list of artists
   Widget artistList() {
     List<Widget> list =  [];
     String? temp;
@@ -51,6 +55,7 @@ class _SongState extends State<Song> {
    // return Row(children: track.artists!.map((artist) =>  Text('${artist.name}', style: GoogleFonts.acme(fontSize: 20),)).toList());
   }
 
+  ///Displays the page and calls [artistList()]
   @override
   Widget build(BuildContext context) {
     return Scaffold(
