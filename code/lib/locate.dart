@@ -1,11 +1,11 @@
 import 'package:location/location.dart';
 
-class locate{
+class locate {
   var _locationData;
   late PermissionStatus _permissionGranted;
   late bool _serviceEnabled;
   Location location = Location();
-  Future checkLocationService() async{
+  Future checkLocationService() async {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -15,8 +15,9 @@ class locate{
     }
   }
 
-  Future checkPermission() async{
+  Future checkPermission() async {
     _permissionGranted = await location.hasPermission();
+    //print("pls give permission");
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
@@ -24,18 +25,18 @@ class locate{
       }
     }
   }
-  Future<LocationData> findLocation() async{
+
+  Future<LocationData> findLocation() async {
     _locationData = await location.getLocation();
     return _locationData;
   }
 
-  Future<void> printLocation() async{
-    try{
+  Future<void> printLocation() async {
+    try {
       print('Awaiting user location...');
       var userLocation = await findLocation();
       print(userLocation);
-    }
-    catch(err){
+    } catch (err) {
       print('Caught error: $err');
     }
   }

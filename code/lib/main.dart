@@ -6,7 +6,6 @@ import 'api.dart';
 import 'pages/song.dart';
 import 'package:spotify/spotify.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
-import 'package:my_app/pages/MongoDBPage.dart';
 import 'package:my_app/pages/grid_view_page.dart';
 import 'package:my_app/locate.dart';
 import 'package:location/location.dart';
@@ -198,19 +197,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 fixedSize: const Size(330, 50),
               ),
             ),
-
-            const Text(
-              'Click the + to go to the mongodb page',
-            ),
             ElevatedButton(
               onPressed: () async {
                 print("locating!");
                 var pleaseWork = locate();
                 // waits until location service is enabled
-                pleaseWork.checkLocationService();
+                await pleaseWork.checkLocationService();
                 print("checked");
                 // waits until user gives their permission to share location
-                pleaseWork.checkPermission();
+                await pleaseWork.checkPermission();
                 print("permission");
                 // finding user location
                 LocationData loc = await pleaseWork.findLocation();
@@ -223,20 +218,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return MongoDBPage();
-              },
-            ),
-          ).then((value) => setState(() {}));
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
