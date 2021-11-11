@@ -80,12 +80,12 @@ class _GridViewPageState extends State<GridViewPage> {
         ],
       ),
       body: FutureBuilder<dynamic>(
-        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 2),
+        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[];
-            List<dynamic> data = snapshot.data[0];
+            List<dynamic> data = snapshot.data;
             debugPrint("data: ${snapshot.data}");
             return Center(
               child:
@@ -108,7 +108,7 @@ class _GridViewPageState extends State<GridViewPage> {
                             children: <Widget>[
                               TextButton(
                                   onPressed: () {
-                                    goToSongPage(argumentSpotify, data[index]);
+                                    goToSongPage(argumentSpotify, data[index][0]);
                                   },
                                   child: widgets.Image.asset(
                                       "assets/nearby_logo.png",
