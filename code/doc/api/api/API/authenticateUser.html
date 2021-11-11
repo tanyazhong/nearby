@@ -59,6 +59,14 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Prompts a new page for users to authenticate with their Spotify account.</p>
+<p>Returns a SpotifyAPI object that can be used to read user data.
+This function takes in no arguments, so it is implemented independently of other features and used in isolation.
+This provides a modular way to validate a user with their Spotify account, and it can be used in the same way in the case of changing requirements.
+For instance, if we wanted to add 2 factor authentication or give authorized users specific privileges, we can just add that to the implementation without touching any client classes.
+Other than its name, it also exposes very little to client classes -- a client class does not need to know how internal details are implemented to use it.</p>
+</section>
 
 
     
@@ -117,7 +125,6 @@
     <li><a href="../../api/API/authenticate.html">authenticate</a></li>
     <li><a href="../../api/API/authenticateUser.html">authenticateUser</a></li>
     <li><a href="../../api/API/currentlyPlaying.html">currentlyPlaying</a></li>
-    <li><a href="../../api/API/devices.html">devices</a></li>
     <li><a href="../../api/API/followingArtists.html">followingArtists</a></li>
     <li><a href="../../api/API/getRecentlyPlayed.html">getRecentlyPlayed</a></li>
     <li><a href="../../api/API/imageUrl.html">imageUrl</a></li>

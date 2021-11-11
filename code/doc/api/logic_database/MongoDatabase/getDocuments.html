@@ -79,21 +79,19 @@
     debugPrint(&quot;lats: $lats&quot;);
     debugPrint(&quot;lons: $lons&quot;);
 
-    var resultMap = generateMap(
-      lats,
-      lons,
-      songIds,
-      userIds,
-    ); &#47;&#47;new Map();
+    var resultMap = Map();
+    for (int i = 0; i &lt; lats.length; i++) {
+      &#47;&#47; TODO: create new LatLon object out of LatLon?
+      String latlon = lats[i].toString() + &quot;,&quot; + lons[i].toString();
+      resultMap[latlon] = [songIds[i], userIds[i]];
+    }
 
     debugPrint(&quot;both: $resultMap&quot;);
     return resultMap;
   } catch (e) {
     inspect(e);
-    &#47;&#47;print(e);
   }
   &#47;&#47;db.close();
-  &#47;&#47;log(&quot;here&quot;);
   return results;
 }</code></pre>
 </section>
@@ -144,7 +142,6 @@
     <li class="section-title"><a href="../../logic_database/MongoDatabase-class.html#static-methods">Static methods</a></li>
     <li><a href="../../logic_database/MongoDatabase/connect.html">connect</a></li>
     <li><a href="../../logic_database/MongoDatabase/degreesToRadians.html">degreesToRadians</a></li>
-    <li><a href="../../logic_database/MongoDatabase/generateMap.html">generateMap</a></li>
     <li><a href="../../logic_database/MongoDatabase/getDocuments.html">getDocuments</a></li>
     <li><a href="../../logic_database/MongoDatabase/getNearbySongsForLoc.html">getNearbySongsForLoc</a></li>
     <li><a href="../../logic_database/MongoDatabase/insert.html">insert</a></li>

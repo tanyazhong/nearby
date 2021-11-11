@@ -60,6 +60,17 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Gets the most recently played songs.</p>
+<p>Returns an iterable list of PlayHistory objects of length <code>numSongs</code>, representing the most recently played songs oof a user.
+This function only takes in an argument of the number of PlayHistory objects to return, so it also supports modularity. Users
+do not need to know how these songs are retrieved to use the API, which is a feature of information hiding. Thus if our needs change,
+like we need to filter podcasts out, we can change this implementation without touching client classes.
+We also return them as an iterable list of PlayHistory, which is a data type defined by the Spotify Flutter API. This is the most
+flexible data type to use because it is the base data type. For instance, if we only wanted the song names or the song IDs, these fields
+are easily recoverable by reading fields of each PlayHistory in the client. Thus this adheres to the information hiding principle, as we
+wouldn't have to change the implementation.</p>
+</section>
 
 
     
@@ -111,7 +122,6 @@
     <li><a href="../../api/API/authenticate.html">authenticate</a></li>
     <li><a href="../../api/API/authenticateUser.html">authenticateUser</a></li>
     <li><a href="../../api/API/currentlyPlaying.html">currentlyPlaying</a></li>
-    <li><a href="../../api/API/devices.html">devices</a></li>
     <li><a href="../../api/API/followingArtists.html">followingArtists</a></li>
     <li><a href="../../api/API/getRecentlyPlayed.html">getRecentlyPlayed</a></li>
     <li><a href="../../api/API/imageUrl.html">imageUrl</a></li>

@@ -59,6 +59,15 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Fetches a SpotifyAPI object using client and secret API keys.</p>
+<p>Returns a SpotifyApi object that can be used to fetch music data.
+Since this function takes in no arguments, it is implemented independently of other feature and used in isolation.
+This provides a modular way to validate a set of API credentials, and it can still be used in the same way in the case of changing requirements.
+For instance, if we wanted to use a different set of API credentials or authenticate through a different method, changes will be isolated to this file.
+We would not need to change any client classes.
+Other than its name, it also exposes very little to client classes -- a client class does not need to know how internal details are implemented to use.</p>
+</section>
 
 
     
@@ -112,7 +121,6 @@
     <li><a href="../../api/API/authenticate.html">authenticate</a></li>
     <li><a href="../../api/API/authenticateUser.html">authenticateUser</a></li>
     <li><a href="../../api/API/currentlyPlaying.html">currentlyPlaying</a></li>
-    <li><a href="../../api/API/devices.html">devices</a></li>
     <li><a href="../../api/API/followingArtists.html">followingArtists</a></li>
     <li><a href="../../api/API/getRecentlyPlayed.html">getRecentlyPlayed</a></li>
     <li><a href="../../api/API/imageUrl.html">imageUrl</a></li>

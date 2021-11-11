@@ -52,18 +52,6 @@ class MongoDatabase {
     return results;
   }
 
-  /// Returns a Map that maps latlon coordinate pairs to the song data for that location
-  static Map<dynamic, dynamic> generateMap(List<dynamic> lats,
-      List<dynamic> lons, List<dynamic> songIds, List<dynamic> userIds) {
-    var result = Map();
-    for (int i = 0; i < lats.length; i++) {
-      // TODO: create new LatLon object out of LatLon?
-      String latlon = lats[i].toString() + "," + lons[i].toString();
-      result[latlon] = [songIds[i], userIds[i]];
-    }
-    return result;
-  }
-
   /// Connects to the Mongo DataBase
   static connect() async {
     debugPrint("connecting!");
@@ -92,21 +80,19 @@ class MongoDatabase {
       debugPrint("lats: $lats");
       debugPrint("lons: $lons");
 
-      var resultMap = generateMap(
-        lats,
-        lons,
-        songIds,
-        userIds,
-      ); //new Map();
+      var resultMap = Map();
+      for (int i = 0; i < lats.length; i++) {
+        // TODO: create new LatLon object out of LatLon?
+        String latlon = lats[i].toString() + "," + lons[i].toString();
+        resultMap[latlon] = [songIds[i], userIds[i]];
+      }
 
       debugPrint("both: $resultMap");
       return resultMap;
     } catch (e) {
       inspect(e);
-      //print(e);
     }
     //db.close();
-    //log("here");
     return results;
   }
 
