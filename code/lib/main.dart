@@ -164,21 +164,40 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            ElevatedButton(onPressed: share, child: Text("Share!", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
-              fixedSize: const Size(330, 50),
-            ),),
-
-            ElevatedButton(onPressed: lurk, child: Text("Lurk", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
-            fixedSize: const Size(330, 50),
-            ),),
-
+            ElevatedButton(
+              onPressed: share,
+              child: Text("Share!",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: lurk,
+              child: Text("Lurk",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
             // testing profile page with this button, we can move it elsewhere for the final product.
-            ElevatedButton(onPressed: profile, child: Text("Profile", style: TextStyle(fontSize: 17, color: Colors.white)), style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50), ),
-              fixedSize: const Size(330, 50),
-            ),),
+            ElevatedButton(
+              onPressed: profile,
+              child: Text("Profile",
+                  style: TextStyle(fontSize: 17, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                fixedSize: const Size(330, 50),
+              ),
+            ),
 
             const Text(
               'Click the + to go to the mongodb page',
