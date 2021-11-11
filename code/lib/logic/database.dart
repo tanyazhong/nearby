@@ -2,6 +2,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
+import 'package:collection/collection.dart';
 
 /// An API that controls all MongoDB controls
 class MongoDatabase {
@@ -46,9 +47,10 @@ class MongoDatabase {
       double curLon = degreesToRadians(double.parse(cur[1]));
       if (withinDistance(degreesToRadians(lat), degreesToRadians(lon), curLat,
           curLon, distance)) {
-        results.add(coord);
+        results.add(documents[coord]);
       }
     }
+    debugPrint("result in getNearbySongs: $results");
     return results;
   }
 
