@@ -20,11 +20,27 @@ class API {
   String? albumID;
   var currentTrack;
 
+  /// Fetches a SpotifyAPI object using client and secret API keys.
+  ///
+  /// Returns a SpotifyApi object that can be used to fetch music data.
+  /// Since this function takes in no arguments, it is implemented independently of other feature and used in isolation.
+  /// This provides a modular way to validate a set of API credentials, and it can still be used in the same way in the case of changing requirements.
+  /// For instance, if we wanted to use a different set of API credentials or authenticate through a different method, changes will be isolated to this file.
+  /// We would not need to change any client classes.
+  /// Other than its name, it also exposes very little to client classes -- a client class does not need to know how internal details are implemented to use.
   SpotifyApi authenticate() {
     credentials = SpotifyApiCredentials(clientID, clientSecret);
     spotify = SpotifyApi(credentials);
     return spotify;
   }
+
+  /// Prompts a new page for users to authenticate with their Spotify account.
+  ///
+  /// Returns a SpotifyAPI object that can be used to read user data.
+  /// This function takes in no arguments, so it is implemented independently of other features and used in isolation.
+  /// This provides a modular way to validate a user with their Spotify account, and it can be used in the same way in the case of changing requirements.
+  /// For instance, if we wanted to add 2 factor authentication or give authorized users specific privileges, we can just add that to the implementation without touching any client classes.
+  /// Other than its name, it also exposes very little to client classes -- a client class does not need to know how internal details are implemented to use it.
 
   Future<SpotifyApi> authenticateUser() async {
     print('big authenticate');
@@ -74,6 +90,16 @@ class API {
     return spotify;
   }
 
+  /// Gets the most recently played songs.
+  ///
+  /// Returns an iterable list of PlayHistory objects of length [numSongs], representing the most recently played songs oof a user.
+  /// This function only takes in an argument of the number of PlayHistory objects to return, so it also supports modularity. Users
+  /// do not need to know how these songs are retrieved to use the API, which is a feature of information hiding. Thus if our needs change,
+  /// like we need to filter podcasts out, we can change this implementation without touching client classes.
+  /// We also return them as an iterable list of PlayHistory, which is a data type defined by the Spotify Flutter API. This is the most
+  /// flexible data type to use because it is the base data type. For instance, if we only wanted the song names or the song IDs, these fields
+  /// are easily recoverable by reading fields of each PlayHistory in the client. Thus this adheres to the information hiding principle, as we
+  /// wouldn't have to change the implementation.
   Future<Iterable<PlayHistory>> getRecentlyPlayed(int numSongs) async {
     return await spotify.me.recentlyPlayed(limit: numSongs);
   }
@@ -100,17 +126,6 @@ class API {
           spotify.tracks.get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f');
     });
     return currentTrack;
-  }
-
-  Future<void> devices(SpotifyApi spotify) async {
-    await spotify.me.devices().then((Iterable<Device>? devices) {
-      if (devices == null) {
-        print('No devices currently playing.');
-        return;
-      }
-      print('Listing ${devices.length} available devices:');
-      print(devices.map((device) => device.name).join(', '));
-    });
   }
 
   Future<void> followingArtists(SpotifyApi spotify) async {
