@@ -142,6 +142,9 @@ class _GridViewPageState extends State<GridViewPage> {
     final argumentSpotify =
         ModalRoute.of(context)!.settings.arguments as SpotifyApi;
     FilterValues filterValues = FilterValues();
+    Future<List<dynamic>> nearbySongIds =
+        MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 2);
+    print("song ids $nearbySongIds");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Grid View"),
