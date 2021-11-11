@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 
+import 'package:my_app/logic/database_entry.dart';
+
 /// An API that controls all MongoDB controls
 class MongoDatabase {
   /// The variable to hold onto the MongoDB instance
@@ -97,8 +99,12 @@ class MongoDatabase {
   }
 
   /// Inserts song data into the database for a location
-  static insert(double lat, double lon, String songId, String userId) async {
-    await songCollection.insertOne(
-        {"lat": lat, "lon": lon, "songId": songId, "userId": userId});
+  static insert(DatabaseEntry entry) async {
+    await songCollection.insertOne({
+      "lat": entry.lat,
+      "lon": entry.lon,
+      "songId": entry.songId,
+      "userId": entry.userId
+    });
   }
 }
