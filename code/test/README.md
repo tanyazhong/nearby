@@ -14,3 +14,15 @@ Scenario 2: Validate that the database contains data for coordinates within West
 - a unit test that ensures that the output from getNearBySongsForLoc(...) is non-empty when given coordinates within Westwood and a radius of 2KM because the database has a permanent entry with coordinates in Westwood
 - on success, the unit test will return true
 - on failure, the test will throw an error and “There should be >1 result for westwood coordinates” will print
+
+### api_test.dart
+    flutter test test/api_test.dart
+Scenario 3: Users are able to authenticate with Spotify 
+- This unit test returns true if the returned SpotifyApi object is not null. 
+- On failure, the test will throw an error and print "Unable to authenticate login with Spotify"
+- Flutter makes it clear how many tests are passed after running the flutter test command.  
+
+Scenario 4: Recently played songs returns a nonnull list of songs. 
+- This unit test returns true if the recentlyPlayed function returns a valid iterable (Flutter's list data structure)
+- On failure, the test will thrown an error and print "Recently played songs should be nonnull"
+
