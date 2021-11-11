@@ -40,24 +40,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>https</string>
-      <string>http</string>
-    </array>
-    <key>CFBundleURLTypes</key>
-      <array>
-        <dict>
-          <key>CFBundleTypeRole</key>
-          <string>Editor</string>
-          <key>CFBundleURLName</key>
-          <string>[user]</string>
-          <key>CFBundleURLSchemes</key>
-          <array>
-            <string>[NEARBY130APP]</string>
-          </array>
-        </dict>
-      </array>
 	<false/>
 </dict>
 </plist>

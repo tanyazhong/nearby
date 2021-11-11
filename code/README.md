@@ -1,4 +1,4 @@
-# my_app
+# nEARby 
 
 A new Flutter project.
 

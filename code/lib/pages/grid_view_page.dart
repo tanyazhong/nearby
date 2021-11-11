@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:my_app/logic/database.dart';
 import 'package:spotify/spotify.dart';
+import 'filter_page.dart';
 import 'song.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/api.dart';
@@ -16,47 +17,14 @@ class GridViewPage extends StatefulWidget {
 class _GridViewPageState extends State<GridViewPage> {
   // Default placeholder text
   String textToShow = "I Like Flutter";
+  double _radius = 5;
+  bool _gridView = true;
+
   void _updateText() {
     setState(() {
       // update the text
       textToShow = "Flutter is Awesome!";
     });
-  }
-
-  double degreesToRadians(double degree) {
-    return (degree * pi / 180);
-  }
-
-  bool withinDistance(
-      double lat1, double lon1, double lat2, double lon2, double distance) {
-    // dist = arccos(sin(lat1) · sin(lat2) + cos(lat1) · cos(lat2) · cos(lon1 - lon2)) · R
-    final R = 6371; // Earth has radius 6371KM
-    double d =
-        acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon1 - lon2)) *
-            R;
-    if (d < distance) {
-      return true;
-    }
-    return false;
-  }
-
-  Future<List<dynamic>> getNearbySongsForLoc(
-      double lat, double lon, double distance) async {
-    List<dynamic> results = [];
-    Map<dynamic, dynamic> documents = await MongoDatabase.getDocuments();
-    debugPrint("hi doc $documents");
-
-    Iterable<dynamic> coordinates = documents.keys;
-    for (var coord in coordinates) {
-      dynamic cur = coord.split(",");
-      double curLat = degreesToRadians(double.parse(cur[0]));
-      double curLon = degreesToRadians(double.parse(cur[1]));
-      if (withinDistance(degreesToRadians(lat), degreesToRadians(lon), curLat,
-          curLon, distance)) {
-        results.add(coord);
-      }
-    }
-    return results;
   }
 
   void goToSongPage(SpotifyApi spotify) {
@@ -76,14 +44,43 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
+  void _onRadiusChanged(FilterValues values) {
+    setState(() {
+      _radius = values.radius;
+      _gridView = values.gridView;
+    });
+    print('radius is $_radius, grid view is $_gridView');
+  }
+
   @override
   Widget build(BuildContext context) {
     final argumentSpotify =
         ModalRoute.of(context)!.settings.arguments as SpotifyApi;
-    getNearbySongsForLoc(100, 100, 10);
+    FilterValues filterValues = FilterValues();
+    Future<List<dynamic>> nearbySongIds =
+        MongoDatabase.getNearbySongsForLoc(100, 100, 10);
+    print("song ids $nearbySongIds");
     return Scaffold(
       appBar: AppBar(
         title: Text("Grid View"),
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20, top: 18),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => FilterPage(
+                                  filterValues: filterValues,
+                                  onChanged: _onRadiusChanged,
+                                )));
+                  },
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  )))
+        ],
       ),
       body: Center(
           child: GridView.count(
@@ -102,6 +99,36 @@ class _GridViewPageState extends State<GridViewPage> {
                 },
                 child: const Text('Heed not the rabble',
                     style: TextStyle(color: Colors.black))),
+            color: Colors.teal[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text('Sound of screams but the'),
+            color: Colors.teal[300],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text('Who scream'),
+            color: Colors.teal[400],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text('Revolution is coming...'),
+            color: Colors.teal[500],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text('Revolution, they...'),
+            color: Colors.teal[600],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text("He'd have you all unravel at the"),
+            color: Colors.teal[100],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: const Text('Heed not the rabble'),
             color: Colors.teal[200],
           ),
           Container(
