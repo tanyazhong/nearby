@@ -77,21 +77,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   SpotifyApi? spotify;
   Track? track;
   API? apiInstance;
   bool trackSet = false;
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   initState() {
@@ -189,13 +178,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () async {
+                print("locating!");
                 var pleaseWork = locate();
                 // waits until location service is enabled
                 pleaseWork.checkLocationService();
-
+                print("checked");
                 // waits until user gives their permission to share location
                 pleaseWork.checkPermission();
-
+                print("permission");
                 // finding user location
                 LocationData loc = await pleaseWork.findLocation();
 
