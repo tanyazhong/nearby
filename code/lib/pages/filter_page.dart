@@ -3,21 +3,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+///Holds the values that are updated in this page and sent back to the
 class FilterValues {
   double radius = 5;
   bool gridView = true;
 }
 
+///Filter Page that allows user to change radius and switch between grid view and list view
 class FilterPage extends StatefulWidget{
   final FilterValues filterValues;
   final ValueChanged<FilterValues> onChanged;
   const FilterPage({Key? key, required this.filterValues, required this.onChanged}): super(key: key);
 
   @override
+  ///Creates mutable state for Song at a given location in the tree
   _FilterPageState createState()=> _FilterPageState( filterValues: filterValues, onChanged: onChanged);
 
 }
-
+///Class that holds the state of [FilterPage] and displays the filter page
 class _FilterPageState extends State <FilterPage>{
   double radius;
   bool gridView;
@@ -26,6 +29,7 @@ class _FilterPageState extends State <FilterPage>{
   _FilterPageState({ required this.filterValues,  required this.onChanged}): radius = filterValues.radius, gridView = filterValues.gridView;
 
   @override
+  ///Dispalys the page and handles callback to parent widget on user input
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
