@@ -61,7 +61,15 @@ class _GridViewPageState extends State<GridViewPage> {
     FilterValues filterValues = FilterValues();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Grid View"),
+        title:  Text(
+          'nEARby',
+          style: TextStyle(color: Colors.black, fontSize: 35),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.transparent,
+        centerTitle: true,
+        toolbarHeight: 80,
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 20, top: 18),
@@ -77,7 +85,7 @@ class _GridViewPageState extends State<GridViewPage> {
                   },
                   child: const Text(
                     'Filter',
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    style: TextStyle(fontSize: 15, color: Colors.black),
                   )))
         ],
       ),

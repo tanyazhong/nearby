@@ -33,12 +33,19 @@ class _FilterPageState extends State <FilterPage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filter', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
+        title: Text(
+          'Filters',
+          style: TextStyle(color: Colors.black, fontSize: 35),
+          textAlign: TextAlign.center,
+        ),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+          toolbarHeight: 80,
         leading: TextButton(onPressed: () {
           Navigator.of(context).pop();
         },
-          child: Text('Back', style: TextStyle(color: Colors.white)))
+          child: Text('Back', style: TextStyle(color: Colors.black)))
       ),
       body: Center(
         child: Column(

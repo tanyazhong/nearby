@@ -60,7 +60,14 @@ class _SongState extends State<Song> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Song'),
+        title: Text(' ',
+          style: TextStyle(color: Colors.black, fontSize: 35),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.transparent,
+        centerTitle: true,
+        toolbarHeight: 50,
       ),
       body: Center(
         child: Column(
