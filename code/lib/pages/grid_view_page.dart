@@ -29,21 +29,6 @@ class _GridViewPageState extends State<GridViewPage> {
   }
 
 
-  void goToSongPage(SpotifyApi spotify, String songID) {
-    Track? track;
-    spotify.tracks.get(songID).then((value) {
-      track = value;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => Song(
-            track: track!,
-          ),
-        ),
-      );
-    });
-  }
-
 
   void _onRadiusChanged(FilterValues values) {
     setState(() {

@@ -211,3 +211,20 @@ void getCurrentTrack()  {
   print('returning from getCurrentTrack');
 }
 */
+
+/*
+void goToSongPage(SpotifyApi spotify, String songID) {
+  Track? track;
+  spotify.tracks.get(songID).then((value) {
+    track = value;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => Song(
+          track: track!,
+        ),
+      ),
+    );
+  });
+}
+*/
