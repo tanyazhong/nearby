@@ -28,6 +28,7 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
+
   void goToSongPage(SpotifyApi spotify, String songID) {
     Track? track;
     spotify.tracks.get(songID).then((value) {
@@ -42,6 +43,7 @@ class _GridViewPageState extends State<GridViewPage> {
       );
     });
   }
+
 
   void _onRadiusChanged(FilterValues values) {
     setState(() {
@@ -96,12 +98,13 @@ class _GridViewPageState extends State<GridViewPage> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 200,
-                              childAspectRatio: 3 / 2,
-                              crossAxisSpacing: 20,
-                              mainAxisSpacing: 20),
+                              childAspectRatio: 5/6,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 0),
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext ctx, index) {
-                        return Container(
+                        return SongWidget(trackID: data[index][0]);
+                        /*return Container(
                           padding: const EdgeInsets.all(2),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -126,7 +129,7 @@ class _GridViewPageState extends State<GridViewPage> {
                             ],
                           ),
                           color: Colors.white,
-                        );
+                        );*/
                       }),
             );
           } else if (snapshot.hasError) {

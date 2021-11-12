@@ -84,6 +84,106 @@ class _SongState extends State<Song> {
   }
 }
 
+
+///Represents the page that will display a song
+class SongWidget extends StatefulWidget{
+  final String trackID;
+  const SongWidget({Key? key, required this.trackID}): super(key: key);
+
+  @override
+  ///Creates mutable state for Song at a given location in the tree
+  _SongWidgetState createState() => _SongWidgetState( trackID: trackID);
+}
+
+///Class that holds the state of [SongWidget] and displays the song page
+class _SongWidgetState extends State<SongWidget> {
+
+  String trackID;
+
+  _SongWidgetState({ required this.trackID});
+
+
+  ///Displays the list of artists
+  Widget artistList(Track track) {
+    List<Widget> list = [];
+    String? temp;
+    int length = track.artists!.length;
+    if (length == 0) {
+      return Text('Artist not available');
+    }
+    for (int i = 0; i < length; i++) {
+      if (i == length - 1) {
+        temp = track.artists![i].name;
+      }
+      else {
+        temp = track.artists![i].name! + ', ';
+      }
+      list.add(
+          Text(temp!, style: TextStyle(fontFamily: 'Acme', fontSize: 10),));
+    }
+    return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+  }
+
+  ///Displays the page and calls [artistList()]
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: API()
+            .authenticate()
+            .tracks
+            .get(trackID),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            Track track = snapshot.data;
+            print('track is $track from builder');
+            return GestureDetector(
+              onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => Song(
+                    track: track,
+                    ),
+                ));
+                },
+              child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.all(20),
+                        child:
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          child:
+                          FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage, image: API().imageUrl(track.album!)),
+                        )),
+                    Text('${track.name}',
+                      style: TextStyle(fontFamily: 'Acme', fontSize: 18,),
+                      textAlign: TextAlign.center,),
+                    artistList(track),
+                  ]
+
+              )
+            ),
+            );
+          }
+          else {
+            return Center(
+                   child: Text('Not available',
+                      style: TextStyle(fontFamily: 'Acme', fontSize: 20,),
+                      textAlign: TextAlign.center,),
+                 // ]
+
+             // ),
+            );
+          }
+        }
+    );
+  }
+}
+
 /*
 void getCurrentTrack()  {
   print('entering getcurrentrack, spotify is $spotify');
