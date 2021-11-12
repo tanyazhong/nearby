@@ -59,12 +59,17 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Returns a user's location</p>
+<p>This is an asynchronous function which returns a LocationData future.
+It uses the location packages getLocation() function and returns its result.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;LocationData&gt; findLocation() async{
+  <pre class="language-dart"><code class="language-dart">Future&lt;LocationData&gt; findLocation() async {
   _locationData = await location.getLocation();
   return _locationData;
 }</code></pre>

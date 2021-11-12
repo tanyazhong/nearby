@@ -59,18 +59,21 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Prints a user's location into the console</p>
+<p>This is used for testing purposes to make sure that a user's location is being fetched properly</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; printLocation() async{
-  try{
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; printLocation() async {
+  try {
     print(&#39;Awaiting user location...&#39;);
     var userLocation = await findLocation();
     print(userLocation);
-  }
-  catch(err){
+  } catch (err) {
     print(&#39;Caught error: $err&#39;);
   }
 }</code></pre>

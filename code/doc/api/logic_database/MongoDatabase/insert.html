@@ -53,10 +53,7 @@
       
 
 <span class="returntype">dynamic</span>
-<span class="name ">insert</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="insert-param-lat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">lat</span>, </span></li>
-<li><span class="parameter" id="insert-param-lon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">lon</span>, </span></li>
-<li><span class="parameter" id="insert-param-songId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">songId</span>, </span></li>
-<li><span class="parameter" id="insert-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">userId</span></span></li>
+<span class="name ">insert</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="insert-param-entry"><span class="type-annotation"><a href="../../logic_database_entry/DatabaseEntry-class.html">DatabaseEntry</a></span> <span class="parameter-name">entry</span></span></li>
 </ol>)
 
       
@@ -71,9 +68,13 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static insert(double lat, double lon, String songId, String userId) async {
-  await songCollection.insertOne(
-      {&quot;lat&quot;: lat, &quot;lon&quot;: lon, &quot;songId&quot;: songId, &quot;userId&quot;: userId});
+  <pre class="language-dart"><code class="language-dart">static insert(DatabaseEntry entry) async {
+  await songCollection.insertOne({
+    &quot;lat&quot;: entry.lat,
+    &quot;lon&quot;: entry.lon,
+    &quot;songId&quot;: entry.songId,
+    &quot;userId&quot;: entry.userId
+  });
 }</code></pre>
 </section>
 

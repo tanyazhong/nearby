@@ -202,11 +202,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 print("locating!");
                 var pleaseWork = locate();
                 // waits until location service is enabled
-                await pleaseWork.checkLocationService();
-                print("checked");
+                var serviceStatus = await pleaseWork.checkLocationService();
+                print("checked: service status is $serviceStatus");
                 // waits until user gives their permission to share location
-                await pleaseWork.checkPermission();
-                print("permission");
+                var permissionStatus = await pleaseWork.checkPermission();
+                print("permission: permission status is $permissionStatus");
                 // finding user location
                 LocationData loc = await pleaseWork.findLocation();
 

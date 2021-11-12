@@ -84,9 +84,10 @@
     double curLon = degreesToRadians(double.parse(cur[1]));
     if (withinDistance(degreesToRadians(lat), degreesToRadians(lon), curLat,
         curLon, distance)) {
-      results.add(coord);
+      results.add(documents[coord]);
     }
   }
+  debugPrint(&quot;result in getNearbySongs: $results&quot;);
   return results;
 }</code></pre>
 </section>
