@@ -2,8 +2,6 @@ import 'package:location/location.dart';
 
 class locate {
   var _locationData;
-  late PermissionStatus _permissionGranted;
-  late bool _serviceEnabled;
   Location location = Location();
 
   /// Checks if user has location service enabled
@@ -13,6 +11,7 @@ class locate {
   /// If the user doesn't want to enable location services, the function return false, but if the user does or has already enabled location services, it returns true.
   /// This provides a modular way for prompting the user to enable their location services. This is important because the app only works if these services are enabled
   Future<bool> checkLocationService() async {
+    bool _serviceEnabled;
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -29,16 +28,16 @@ class locate {
   /// It first checks if the user has given the app permission to access their location, and if they haven't, it prompts the user to enable their location services.
   /// If the user doesn't want to give the app their permission to access their location, the function return false, but if the user does or has already given permission, it returns true.
   /// This provides a modular way for prompting the user to give their permission for the app to access their location . This is important because our app only works if the app has their permission to access their location
-  Future<bool> checkPermission() async {
-    _permissionGranted = await location.hasPermission();
+  Future<PermissionStatus> checkPermission() async {
+    var _permissionGranted = await location.hasPermission();
     //print("pls give permission");
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        return false;
+        return _permissionGranted;
       }
     }
-    return true;
+    return _permissionGranted;
   }
 
   /// Returns a user's location
