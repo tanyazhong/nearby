@@ -105,6 +105,9 @@ class _SongWidgetState extends State<SongWidget> {
 
   ///Displays the list of artists
   Widget artistList(Track track) {
+    if(track.name == null){
+      return Text('Artist not available');
+    }
     List<Widget> list = [];
     String? temp;
     int length = track.artists!.length;

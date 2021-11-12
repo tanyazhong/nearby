@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_app/main.dart';
+import 'package:my_app/pages/grid_view_page.dart';
 import 'package:my_app/pages/song.dart';
 import 'package:my_app/pages/filter_page.dart';
 import 'package:my_app/api.dart';
@@ -11,11 +13,32 @@ void main() {
   spotify.tracks
       .get('4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f')
       .then((value) {
-    track = value;});
+    track = value;
+    print('track is ');
+      });
 
-  group('SongPage', () {
-    test('Song Page will retrieve artist list', () {
-      Widget result = Song(track: track!).createState().artistList();
-      expect(result != null, true);});
+  group('SongPage', ()
+  {
+    test('Song Page will return Widget from artistList()', () {
+      expect(SongWidget(trackID: '4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f')
+          .createState()
+          .artistList(Track()) is Widget, true);
+    });
+  });
+
+  bool onChanged(FilterValues values){
+    values.gridView = true;
+    return values.gridView;
+  }
+
+  group('FilterPage', ()
+  {
+    test('OnChanged will send back updated values', () {
+      FilterValues testing = FilterValues();
+      testing.gridView = false;
+      FilterPage(filterValues: testing, onChanged: onChanged).createState().onChanged(testing);
+      expect(onChanged(testing), true);
+    });
   });
 }
+
