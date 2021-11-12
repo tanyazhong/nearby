@@ -52,26 +52,34 @@
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.dart.dev/stable/2.14.4/dart-async/Future-class.html">Future</a></span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
 <span class="name ">checkLocationService</span>(<wbr>)
 
       
 
     </section>
     
+<section class="desc markdown">
+  <p>Checks if user has location service enabled</p>
+<p>This is an asynchronous function which returns a boolean future.
+It first checks if the user has enabled their location service on their device and if they haven't, it prompts the user to enable their location services.
+If the user doesn't want to enable location services, the function return false, but if the user does or has already enabled location services, it returns true.
+This provides a modular way for prompting the user to enable their location services. This is important because the app only works if these services are enabled</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future checkLocationService() async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; checkLocationService() async {
   _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
     _serviceEnabled = await location.requestService();
     if (!_serviceEnabled) {
-      return;
+      return false;
     }
   }
+  return true;
 }</code></pre>
 </section>
 
@@ -103,20 +111,20 @@
     <li class="section-title">
       <a href="../../locate/locate-class.html#instance-properties">Properties</a>
     </li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.4/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
     <li><a href="../../locate/locate/location.html">location</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.4/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
 
     <li class="section-title"><a href="../../locate/locate-class.html#instance-methods">Methods</a></li>
     <li><a href="../../locate/locate/checkLocationService.html">checkLocationService</a></li>
     <li><a href="../../locate/locate/checkPermission.html">checkPermission</a></li>
     <li><a href="../../locate/locate/findLocation.html">findLocation</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.4/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
     <li><a href="../../locate/locate/printLocation.html">printLocation</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.4/dart-core/Object/toString.html">toString</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
 
     <li class="section-title inherited"><a href="../../locate/locate-class.html#operators">Operators</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.4/dart-core/Object/operator_equals.html">operator ==</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
 
 
 
