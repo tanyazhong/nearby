@@ -5,14 +5,23 @@ import 'package:flutter/material.dart';
 
 ///Holds the values that are updated in this page and sent back to the
 class FilterValues {
+
+  ///Radius of the area to retrieve songs from
   double radius = 5;
+
+  ///Gridview or listview of listed songs
   bool gridView = true;
 }
 
 ///Filter Page that allows user to change radius and switch between grid view and list view
 class FilterPage extends StatefulWidget{
+
+  ///Holds radius and gridView, sent back to GridViewPage in callback
   final FilterValues filterValues;
+
+  ///Callback to GridViewPage for FilterValues
   final ValueChanged<FilterValues> onChanged;
+
   const FilterPage({Key? key, required this.filterValues, required this.onChanged}): super(key: key);
 
   @override
@@ -22,14 +31,23 @@ class FilterPage extends StatefulWidget{
 }
 ///Class that holds the state of [FilterPage] and displays the filter page
 class _FilterPageState extends State <FilterPage>{
+
+  ///Radius of the area to retrieve songs from
   double radius;
+
+  ///Gridview or listview of listed songs
   bool gridView;
+
+  ///Holds radius and gridView, sent back to GridViewPage in callback
   FilterValues filterValues;
+
+  ///Callback to GridViewPage for FilterValues
   ValueChanged<FilterValues> onChanged;
+
   _FilterPageState({ required this.filterValues,  required this.onChanged}): radius = filterValues.radius, gridView = filterValues.gridView;
 
   @override
-  ///Dispalys the page and handles callback to parent widget on user input
+  ///Displays the page and handles callback to parent widget on user input
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(

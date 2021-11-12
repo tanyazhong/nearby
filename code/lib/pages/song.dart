@@ -11,7 +11,10 @@ import 'package:transparent_image/transparent_image.dart';
 
 ///Represents the page that will display a song
 class Song extends StatefulWidget{
+
+  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   final Track track;
+
   const Song({Key? key, required this.track}): super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class Song extends StatefulWidget{
 ///Class that holds the state of [Song] and displays the song page
 class _SongState extends State<Song> {
 
+  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   Track track;
   _SongState({ required this.track});
   String? imageUrl;
@@ -94,7 +98,10 @@ class _SongState extends State<Song> {
 
 ///Represents the page that will display a song
 class SongWidget extends StatefulWidget{
+
+  ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
+
   const SongWidget({Key? key, required this.trackID}): super(key: key);
 
   @override
@@ -105,6 +112,7 @@ class SongWidget extends StatefulWidget{
 ///Class that holds the state of [SongWidget] and displays the song page
 class _SongWidgetState extends State<SongWidget> {
 
+  ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
 
   _SongWidgetState({ required this.trackID});
