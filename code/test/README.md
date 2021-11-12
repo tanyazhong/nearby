@@ -26,3 +26,13 @@ Scenario 4: Recently played songs returns a nonnull list of songs.
 - This unit test returns true if the recentlyPlayed function returns a valid iterable (Flutter's list data structure)
 - On failure, the test will thrown an error and print "Recently played songs should be nonnull"
 
+Scenario 5: Ensure that the Song Page can retrieve a Widget from artistList.
+- This unit test will return true if a Widget is returned from calling artistList inside the class Song which renders the Song Page
+- If this fails it means that an error occurred in creating the class _SongState or an instance of Track because artistList always returns a Widget
+- This unit test is important because the Song Page needs to be dependable and not throw an error when requested.
+
+Scenario 6: Ensure that the Filter Page can send values back to its parent widget through the callback onChanged
+- This unit test will return true if a value in FilterValue is changed when it is called through the FilterPage class
+- If the test fails it means that the callback function isn’t being accessed properly by the filter page
+- This unit test is important because the Filter Page’s job is to allow the user to change settings that affect what they see on the grid view page.  The onChanged function sends the updated values back to GridViewPage
+
