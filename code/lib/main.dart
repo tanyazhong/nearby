@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
     var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
+    var p = await apiInstance!.createPlaylist();
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
