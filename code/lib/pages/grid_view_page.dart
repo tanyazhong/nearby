@@ -28,8 +28,6 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
-
-
   void _onRadiusChanged(FilterValues values) {
     setState(() {
       _radius = values.radius;
@@ -46,7 +44,7 @@ class _GridViewPageState extends State<GridViewPage> {
     FilterValues filterValues = FilterValues();
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           'nEARby',
           style: TextStyle(color: Colors.black, fontSize: 35),
           textAlign: TextAlign.center,
@@ -91,7 +89,7 @@ class _GridViewPageState extends State<GridViewPage> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 200,
-                              childAspectRatio: 5/6,
+                              childAspectRatio: 5 / 6,
                               crossAxisSpacing: 0,
                               mainAxisSpacing: 0),
                       itemCount: snapshot.data.length,
