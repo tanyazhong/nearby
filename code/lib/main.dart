@@ -8,6 +8,7 @@ import 'package:spotify/spotify.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/pages/grid_view_page.dart';
 import 'package:my_app/locate.dart';
+import 'package:my_app/logic/database.dart';
 import 'package:location/location.dart';
 
 void main() {
@@ -90,7 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
     var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
-    var p = await apiInstance!.createPlaylist();
+
+    Iterable<dynamic> dbSongs =
+        await MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20);
+    print(dbSongs);
+    Iterable<String> testSongs = dbSongs.map((song) => song[0] as String);
+    var p = await apiInstance!.createPlaylist(testSongs);
+
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
