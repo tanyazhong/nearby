@@ -9,8 +9,11 @@ import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 //https://pub.dev/documentation/uni_links/latest/ for uni_links
 
-const String clientID = "b03425c1e1af4ba1bc82f71a5bc0875b";
-const String clientSecret = "2bcdc8148d674bfa92507e10280971f4";
+// const String clientID = "b03425c1e1af4ba1bc82f71a5bc0875b";
+// const String clientSecret = "2bcdc8148d674bfa92507e10280971f4";
+
+const String clientID = "23d2ea2c69e74794b6390d74307a6812";
+const String clientSecret = "5b342954dd284bb18625a596023d526b";
 
 class API {
   var spotify;
@@ -169,6 +172,20 @@ class API {
     } else {
       return url;
     }
+  }
+
+  Future<String> getProfileImage(String userID) async {
+    UserPublic user = await spotify.users.get(userID);
+    print("user URI: " + user.uri!);
+    for (var i in user.images!) {
+      print(i.url!);
+    }
+    return user.images!.first.url!;
+  }
+
+  Future<String> getUserDisplayName(String userID) async {
+    UserPublic user = await spotify.users.get(userID);
+    return user.displayName!;
   }
 }
 
