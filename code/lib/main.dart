@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/logic/database_entry.dart';
 import 'package:my_app/pages/profile_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'api.dart';
@@ -89,20 +90,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void share() async {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
+
+    Navigator.pushNamed(context, '/grid_view', arguments: spotify);
     var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
-
     Iterable<dynamic> dbSongs =
         await MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20);
     print(dbSongs);
     Iterable<String> testSongs = dbSongs.map((song) => song[0] as String);
     var p = await apiInstance!.createPlaylist(testSongs);
 
-    Navigator.pushNamed(context, '/grid_view', arguments: spotify);
+  // Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
   void lurk() {
     SpotifyApi spotify = apiInstance!.authenticate();
+    //spotify.me.get().then((value) => print('lurk is $value'),
+    //).onError((error, stackTrace) => print('lurk is null'));
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 

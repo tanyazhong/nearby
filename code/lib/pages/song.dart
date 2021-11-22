@@ -44,7 +44,7 @@ abstract class SongState extends State<StatefulWidget> {
     return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
   }
 
-  Widget songContainer() {
+  Widget songContainer(bool overflow) {
     return FutureBuilder(
         future: API()
             .authenticate()
@@ -58,12 +58,12 @@ abstract class SongState extends State<StatefulWidget> {
               onTap: onTap,
               child: Container(
                   alignment: Alignment.center,
-                  child: Column(
+                  child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child:
+                       Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                            padding: EdgeInsets.all(20),
-                            child:
                             ClipRRect(
                               borderRadius: BorderRadius.all(
                                   Radius.circular(30)),
@@ -71,14 +71,15 @@ abstract class SongState extends State<StatefulWidget> {
                               FadeInImage.memoryNetwork(
                                   placeholder: kTransparentImage,
                                   image: API().imageUrl(track.album!)),
-                            )),
+                            ),
                         Text('${track.name}',
                           style: TextStyle(fontFamily: 'Acme', fontSize: fontSize+10,),
-                          textAlign: TextAlign.center,),
+                          textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,),
                         artistList(track),
                       ]
-
-                  )
+                       ),
+                  ),
               ),
             );
           }
@@ -137,7 +138,7 @@ class _SongPageState extends SongState {
         centerTitle: true,
         toolbarHeight: 50,
       ),
-      body: songContainer(),
+      body: songContainer(false),
 
     );
   }
@@ -180,7 +181,7 @@ class _SongWidgetState extends SongState {
   ///Displays the page and calls [artistList()]
   @override
   Widget build(BuildContext context) {
-    return songContainer();}
+    return songContainer(true);}
           }
 
 
