@@ -215,6 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 // waits until user gives their permission to share location
                 var permissionStatus = await pleaseWork.checkPermission();
                 print("permission: permission status is $permissionStatus");
+                var backgroundPermission = await pleaseWork.backgroundPermission();
+                print("background permission status is $backgroundPermission");
                 // finding user location
                 LocationData loc = await pleaseWork.findLocation();
 
