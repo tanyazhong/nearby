@@ -68,6 +68,12 @@ class MongoDatabase {
     debugPrint("async");
   }
 
+  static getRandomNumber() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(1000);
+    return randomNumber.toString();
+  }
+
   // Returns the documents in the Mongo Database
   static Future<Map<dynamic, dynamic>> getDocuments() async {
     await connect();
@@ -88,6 +94,10 @@ class MongoDatabase {
       for (int i = 0; i < lats.length; i++) {
         // TODO: create new LatLon object out of LatLon?
         String latlon = lats[i].toString() + "," + lons[i].toString();
+        // add a number to latlon if latlon already exists in resultMap
+        if (resultMap.containsKey(latlon)) {
+          latlon = latlon + "," + getRandomNumber();
+        }
         resultMap[latlon] = [songIds[i], userIds[i]];
       }
 
