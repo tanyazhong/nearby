@@ -1,4 +1,4 @@
-class User{
+class User {
   final String name;
   final String imagePath;
   final String userName;
@@ -12,5 +12,4 @@ class User{
     required this.userName,
     required this.recentSongImage,
   });
-
 }

@@ -91,13 +91,19 @@ class _MyHomePageState extends State<MyHomePage> {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
     var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
+    // example usage of some of the API functions
 
-    Iterable<dynamic> dbSongs =
-        await MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20);
-    print(dbSongs);
-    Iterable<String> testSongs = dbSongs.map((song) => song[0] as String);
-    var p = await apiInstance!.createPlaylist(testSongs);
-
+    // Iterable<dynamic> dbSongs =
+    //     await MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20);
+    // print(dbSongs);
+    // Iterable<String> testSongs = dbSongs.map((song) => song[0] as String);
+    // var p = await apiInstance!.createPlaylist(testSongs);
+    // String profileURL =
+    //     await apiInstance!.getProfileImage("cif5mulm9m0s5jev1kwpmbjz7");
+    // print(profileURL);
+    // String displayName =
+    //     await apiInstance!.getUserDisplayName("cif5mulm9m0s5jev1kwpmbjz7");
+    // print(displayName);
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
@@ -215,7 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 // waits until user gives their permission to share location
                 var permissionStatus = await pleaseWork.checkPermission();
                 print("permission: permission status is $permissionStatus");
-                var backgroundPermission = await pleaseWork.backgroundPermission();
+                var backgroundPermission =
+                    await pleaseWork.backgroundPermission();
                 print("background permission status is $backgroundPermission");
                 // finding user location
                 LocationData loc = await pleaseWork.findLocation();

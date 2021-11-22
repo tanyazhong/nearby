@@ -170,6 +170,16 @@ class API {
       return url;
     }
   }
+
+  Future<String> getProfileImage(String userID) async {
+    UserPublic user = await spotify.users.get(userID);
+    return user.images!.first.url!;
+  }
+
+  Future<String> getUserDisplayName(String userID) async {
+    UserPublic user = await spotify.users.get(userID);
+    return user.displayName!;
+  }
 }
 
 //https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI?si=066eca5b3d534656  lover song
