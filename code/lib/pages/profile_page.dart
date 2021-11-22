@@ -7,6 +7,9 @@ import 'package:my_app/user_profile/app_bar.dart';
 import 'package:my_app/user_profile/user_preferences.dart';
 import 'package:my_app/user_profile/profile_widget.dart';
 import 'package:my_app/user_profile/user.dart' as u;
+import 'package:flutter/src/widgets/image.dart' as img;
+import 'package:my_app/user_profile/open_spotify_button.dart';
+import 'package:my_app/user_profile/recent_songs.dart';
 
 class ProfilePage extends StatefulWidget{
   @override
@@ -28,6 +31,30 @@ class _ProfilePageState extends State<ProfilePage>{
           ),
           const SizedBox(height: 26),
           buildName(user),
+          const SizedBox(
+            height: 10,
+          ),
+          Center(child: buildOpenSpotifyButton()),
+          const SizedBox(
+            height: 18,
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 30,
+            ),
+            child: const Text(
+            'Recently Played Songs',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ),
+          const SizedBox(
+            height: 18,
+          ),
+          Center(child: buildRecentSongs(user)),
+          const SizedBox(
+            height: 18,
+          ),
+          Center(child: buildRecentSongs(user)),
         ],
       )
     );
@@ -46,5 +73,18 @@ class _ProfilePageState extends State<ProfilePage>{
       )
     ],
   );
+
+  Widget buildOpenSpotifyButton() => OpenSpotify(
+    text: 'Open Profile in Spotify',
+    onClicked: () {
+      // add open spotify profile link stuff
+    },
+  );
+
+  Widget buildRecentSongs(u.User user) => RecentSongs(
+      text: user.recentSong,
+      cover: user.recentSongImage,
+  );
+
 }
 
