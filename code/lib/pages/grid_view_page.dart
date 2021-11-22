@@ -80,49 +80,38 @@ class _GridViewPageState extends State<GridViewPage> {
             children = <Widget>[];
             List<dynamic> data = snapshot.data;
             debugPrint("data: ${snapshot.data}");
-            return Center(
-              child:
-                  // Text(
-                  //   'Result: ${snapshot.data}',
-                  // ),
-                  GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 200,
-                              childAspectRatio: 5 / 6,
-                              crossAxisSpacing: 0,
-                              mainAxisSpacing: 0),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return SongWidget(trackID: data[index][0]);
-                        /*return Container(
-                          padding: const EdgeInsets.all(2),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              TextButton(
-                                  onPressed: () {
-                                    goToSongPage(argumentSpotify, data[index][0]);
-                                  },
-                                  child: widgets.Image.asset(
-                                      "assets/nearby_logo.png",
-                                      alignment: Alignment.center,
-                                      height: 75,
-                                      width: 75)),
-                              const Text(
-                                'Song Title',
-                                textAlign: TextAlign.left,
-                              ),
-                              const Text(
-                                'Song Artist',
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          ),
-                          color: Colors.white,
-                        );*/
-                      }),
-            );
+            if (_gridView) {
+              // DISPLAY GRID VIEW
+              return Center(
+                child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 4 / 6,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0),
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return SongWidget(trackID: data[index][0]);
+                    }),
+              );
+            } else {
+              // DISPLAY LIST VIEW
+              return Center(
+                child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SongWidget(trackID: data[index][0]);
+                      // return ListTile(
+                      //     leading: Icon(Icons.list),
+                      //     trailing: const Text(
+                      //       "GFG",
+                      //       style: TextStyle(color: Colors.green, fontSize: 15),
+                      //     ),
+                      //     title: Text("List item $index"));
+                    }),
+              );
+            }
           } else if (snapshot.hasError) {
             children = <Widget>[
               const Icon(
@@ -148,7 +137,7 @@ class _GridViewPageState extends State<GridViewPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
+                child: Text('Loading...'),
               )
             ];
             return Center(

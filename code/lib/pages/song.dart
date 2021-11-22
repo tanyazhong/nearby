@@ -7,14 +7,12 @@ import 'package:my_app/api.dart';
 import 'package:spotify/spotify.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-
-
 abstract class SongState extends State<StatefulWidget> {
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
   double fontSize;
 
-  SongState({ required this.trackID, required this.fontSize});
+  SongState({required this.trackID, required this.fontSize});
 
   Widget build(BuildContext context);
   void onTap();
@@ -33,23 +31,23 @@ abstract class SongState extends State<StatefulWidget> {
     for (int i = 0; i < length; i++) {
       if (i == length - 1) {
         temp = track.artists![i].name;
-      }
-      else {
+      } else {
         temp = track.artists![i].name! + ', ';
       }
-      list.add(
-          Text(
-            temp!, style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),));
+      list.add(Text(
+        temp!,
+        style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),
+      ));
     }
-    return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+    return Row(
+      children: list,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
   }
 
   Widget songContainer() {
     return FutureBuilder(
-        future: API()
-            .authenticate()
-            .tracks
-            .get(trackID),
+        future: API().authenticate().tracks.get(trackID),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
@@ -63,63 +61,63 @@ abstract class SongState extends State<StatefulWidget> {
                       children: [
                         Padding(
                             padding: EdgeInsets.all(20),
-                            child:
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(30)),
-                              child:
-                              FadeInImage.memoryNetwork(
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              child: FadeInImage.memoryNetwork(
                                   placeholder: kTransparentImage,
                                   image: API().imageUrl(track.album!)),
                             )),
-                        Text('${track.name}',
-                          style: TextStyle(fontFamily: 'Acme', fontSize: fontSize+10,),
-                          textAlign: TextAlign.center,),
+                        Text(
+                          '${track.name}',
+                          style: TextStyle(
+                            fontFamily: 'Acme',
+                            fontSize: fontSize + 10,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                         artistList(track),
-                      ]
-
-                  )
+                      ])),
+            );
+          } else {
+            return Center(
+              child: Text(
+                'Loading...',
+                style: TextStyle(
+                  fontFamily: 'Acme',
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
               ),
             );
           }
-          else {
-            return Center(
-              child: Text('Not available',
-                style: TextStyle(fontFamily: 'Acme', fontSize: 20,),
-                textAlign: TextAlign.center,),
-              // ]
-
-              // ),
-            );
-          }
-        }
-    );
+        });
   }
 }
 
 ///Represents the page that will display a song
-class SongPage extends StatefulWidget{
-
+class SongPage extends StatefulWidget {
   ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   final String trackID;
 
-  const SongPage({Key? key, required this.trackID}): super(key: key);
+  const SongPage({Key? key, required this.trackID}) : super(key: key);
 
   @override
+
   ///Creates mutable state for Song at a given location in the tree
-  _SongPageState createState() => _SongPageState(trackID: trackID, fontSize: 20);
+  _SongPageState createState() =>
+      _SongPageState(trackID: trackID, fontSize: 20);
 }
 
 ///Class that holds the state of [Song] and displays the song page
 class _SongPageState extends SongState {
-
   ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
 
   String? imageUrl;
   String trackID;
   double fontSize;
-  _SongPageState({required this.trackID, required this.fontSize }) : super(trackID: trackID, fontSize: fontSize);
-
+  _SongPageState({required this.trackID, required this.fontSize})
+      : super(trackID: trackID, fontSize: fontSize);
 
   void onTap() {}
 
@@ -128,7 +126,8 @@ class _SongPageState extends SongState {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' ',
+        title: Text(
+          ' ',
           style: TextStyle(color: Colors.black, fontSize: 35),
           textAlign: TextAlign.center,
         ),
@@ -138,33 +137,32 @@ class _SongPageState extends SongState {
         toolbarHeight: 50,
       ),
       body: songContainer(),
-
     );
   }
 }
 
-
 ///Represents the page that will display a song
-class SongWidget extends StatefulWidget{
-
+class SongWidget extends StatefulWidget {
   ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
 
-  const SongWidget({Key? key, required this.trackID}): super(key: key);
+  const SongWidget({Key? key, required this.trackID}) : super(key: key);
 
   @override
+
   ///Creates mutable state for Song at a given location in the tree
-  _SongWidgetState createState() => _SongWidgetState( trackID: trackID, fontSize: 10);
+  _SongWidgetState createState() =>
+      _SongWidgetState(trackID: trackID, fontSize: 10);
 }
 
 ///Class that holds the state of [SongWidget] and displays the song page
 class _SongWidgetState extends SongState {
-
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
   double fontSize;
 
-  _SongWidgetState({ required this.trackID, required this.fontSize}) : super(trackID: trackID, fontSize: fontSize);
+  _SongWidgetState({required this.trackID, required this.fontSize})
+      : super(trackID: trackID, fontSize: fontSize);
 
   void onTap() {
     Navigator.push(
@@ -176,12 +174,12 @@ class _SongWidgetState extends SongState {
         ));
   }
 
-
   ///Displays the page and calls [artistList()]
   @override
   Widget build(BuildContext context) {
-    return songContainer();}
-          }
+    return songContainer();
+  }
+}
 
 
 
