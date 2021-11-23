@@ -101,7 +101,7 @@ class _GridViewPageState extends State<GridViewPage> {
                 child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return SongWidget(trackID: data[index][0]);
+                      return ListSongWidget(trackID: data[index][0]);
                       // return ListTile(
                       //     leading: Icon(Icons.list),
                       //     trailing: const Text(

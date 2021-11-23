@@ -181,6 +181,93 @@ class _SongWidgetState extends SongState {
   }
 }
 
+///Represents the page that will display a song
+class ListSongWidget extends StatefulWidget {
+  ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
+  final String trackID;
+
+  const ListSongWidget({Key? key, required this.trackID}) : super(key: key);
+
+  @override
+
+  ///Creates mutable state for Song at a given location in the tree
+  _ListSongWidgetState createState() =>
+      _ListSongWidgetState(trackID: trackID, fontSize: 10);
+}
+
+///Class that holds the state of [ListSongWidget] and displays the song page
+class _ListSongWidgetState extends SongState {
+  ///Song ID that can be used with the spotify API to get the song's track, set in constructor
+  String trackID;
+  double fontSize;
+
+  _ListSongWidgetState({required this.trackID, required this.fontSize})
+      : super(trackID: trackID, fontSize: fontSize);
+
+  void onTap() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SongPage(
+            trackID: trackID,
+          ),
+        ));
+  }
+
+  ///Displays the page and calls [artistList()]
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: API().authenticate().tracks.get(trackID),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            Track track = snapshot.data;
+            print('track is $track from builder');
+            return GestureDetector(
+              onTap: onTap,
+              child: Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.all(20),
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: API().imageUrl(track.album!)),
+                            )),
+                        Text(
+                          '${track.name}',
+                          style: TextStyle(
+                            fontFamily: 'Acme',
+                            fontSize: fontSize + 10,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        artistList(track),
+                      ])),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                'Loading...',
+                style: TextStyle(
+                  fontFamily: 'Acme',
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+        });
+  }
+}
+
+
+
 
 
 
