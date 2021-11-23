@@ -99,16 +99,10 @@ class _GridViewPageState extends State<GridViewPage> {
               // DISPLAY LIST VIEW
               return Center(
                 child: ListView.builder(
+                    itemExtent: 70,
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListSongWidget(trackID: data[index][0]);
-                      // return ListTile(
-                      //     leading: Icon(Icons.list),
-                      //     trailing: const Text(
-                      //       "GFG",
-                      //       style: TextStyle(color: Colors.green, fontSize: 15),
-                      //     ),
-                      //     title: Text("List item $index"));
                     }),
               );
             }

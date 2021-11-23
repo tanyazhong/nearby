@@ -18,7 +18,7 @@ abstract class SongState extends State<StatefulWidget> {
   void onTap();
 
   ///Displays the list of artists
-  Widget artistList(Track track) {
+  Widget artistList(Track track, {bool alignLeft = false}) {
     if (track.name == null) {
       return Text('Artist not available');
     }
@@ -38,6 +38,12 @@ abstract class SongState extends State<StatefulWidget> {
         temp!,
         style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),
       ));
+    }
+    if (alignLeft) {
+      return Row(
+        children: list,
+        mainAxisAlignment: MainAxisAlignment.start,
+      );
     }
     return Row(
       children: list,
@@ -80,7 +86,7 @@ abstract class SongState extends State<StatefulWidget> {
                       ])),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text(
                 'Loading...',
                 style: TextStyle(
@@ -126,7 +132,7 @@ class _SongPageState extends SongState {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           ' ',
           style: TextStyle(color: Colors.black, fontSize: 35),
           textAlign: TextAlign.center,
@@ -222,34 +228,27 @@ class _ListSongWidgetState extends SongState {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            print('track is $track from builder');
+            debugPrint('track is $track from builder');
             return GestureDetector(
-              onTap: onTap,
-              child: Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.all(20),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: API().imageUrl(track.album!)),
-                            )),
-                        Text(
-                          '${track.name}',
-                          style: TextStyle(
-                            fontFamily: 'Acme',
-                            fontSize: fontSize + 10,
+                onTap: onTap,
+                child: ListTile(
+                    leading: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: API().imageUrl(track.album!)),
+                    title: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${track.name}',
+                            style: TextStyle(
+                              fontFamily: 'Acme',
+                              fontSize: fontSize + 12,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        artistList(track),
-                      ])),
-            );
+                          artistList(track, alignLeft: true),
+                        ])));
           } else {
             return const Center(
               child: Text(
@@ -258,18 +257,13 @@ class _ListSongWidgetState extends SongState {
                   fontFamily: 'Acme',
                   fontSize: 20,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
             );
           }
         });
   }
 }
-
-
-
-
-
 
 /*
 void getCurrentTrack()  {
@@ -288,5 +282,3 @@ void getCurrentTrack()  {
   print('returning from getCurrentTrack');
 }
 */
-
-
