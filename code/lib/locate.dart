@@ -61,4 +61,10 @@ class locate {
       print('Caught error: $err');
     }
   }
+
+  Future<bool> backgroundPermission() async{
+    await location.enableBackgroundMode(enable: true);
+    return await location.isBackgroundModeEnabled();
+  }
+
 }
