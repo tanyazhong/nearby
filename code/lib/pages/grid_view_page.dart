@@ -96,7 +96,7 @@ class _GridViewPageState extends State<GridViewPage> {
       ),
       body: FutureBuilder<dynamic>(
         //34.06892, -118.445183, 20
-        future: MongoDatabase.getNearbySongsForLoc(37.4219983, -122.084, _radius),
+        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {

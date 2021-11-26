@@ -8,36 +8,7 @@ import io.flutter.plugin.common.BinaryMessenger
 import com.example.my_app.SpotifyBroadcastReceiver
 import android.content.IntentFilter
 
-/*
-class EventChannelHandler(val context: Context){
-    private lateinit var eventChannel: EventChannel
 
-   fun startListening(messenger: BinaryMessenger?){
-       println("startListening")
-       eventChannel = EventChannel(messenger, "track_change");
-       eventChannel.setStreamHandler( EventStreamHandler())
-
-                   *//*override fun onListen(arguments: Any?, eventSink: EventSink){
-                       println("onListen");
-                       val receiver = SpotifyBroadcastReceiver();
-                       receiver.setListener(object: SpotifyTrackChangeListener() {
-                           override fun onTrackChange(trackID: String?) {
-                               if (trackID != null) {
-                                  println("success");
-                                   eventSink.success(trackID);
-                               }
-                           }
-                       })
-                       val filter = IntentFilter("action.track_change");
-                       context.registerReceiver(receiver, filter);
-                   }
-
-                   override fun onCancel(p0: Any){}*//*
-
-
-   }
-
-}*/
 
 class EventStreamHandler(val context:Context) : EventChannel.StreamHandler{
     private var eventSink: EventChannel.EventSink? = null
