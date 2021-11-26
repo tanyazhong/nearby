@@ -39,7 +39,7 @@ abstract class SongState extends State<StatefulWidget> {
       }
       list.add(
           Text(
-            temp!, style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),));
+            temp!, style: TextStyle(fontFamily: 'Acme', fontSize: fontSize, overflow: TextOverflow.ellipsis,),));
     }
     return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
   }

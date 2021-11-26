@@ -4,6 +4,7 @@ import 'package:my_app/logic/database_entry.dart';
 import 'package:my_app/pages/profile_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'api.dart';
+import 'background.dart';
 import 'pages/song.dart';
 import 'package:spotify/spotify.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
@@ -86,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     apiInstance = API();
+
   }
 
   void share() async {
@@ -94,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
     var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
-
+    TrackChange(spotify);
     // example usage of some of the API functions
 
     // Iterable<dynamic> dbSongs =
