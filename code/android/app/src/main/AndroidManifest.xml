@@ -45,7 +45,7 @@
             <data android:scheme="nearby" />
           </intent-filter>
         </activity>
-       <receiver android:name=".SpotifyBroadcastReceiver"
+       <receiver android:name="SpotifyBroadcastReceiver"
            android:enabled="true"
            android:exported="true">
            <intent-filter>

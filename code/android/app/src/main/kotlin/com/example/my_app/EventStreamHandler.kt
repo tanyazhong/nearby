@@ -39,13 +39,13 @@ class EventChannelHandler(val context: Context){
 
 }*/
 
-class EventStreamHandler : EventChannel.StreamHandler{
+class EventStreamHandler(val context:Context) : EventChannel.StreamHandler{
     private var eventSink: EventChannel.EventSink? = null
 
     override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink?) {
         println("onListen")
         this.eventSink = eventSink;
-        /*val receiver = SpotifyBroadcastReceiver()
+        val receiver = SpotifyBroadcastReceiver()
         receiver.setListener(object : SpotifyTrackChangeListener() {
             override fun onTrackChange(trackID: String?) {
                 if (trackID != null) {
@@ -54,7 +54,8 @@ class EventStreamHandler : EventChannel.StreamHandler{
                 }
             }
         })
-*/
+        val filter = IntentFilter("com.spotify.music.metadatachanged")
+        context.registerReceiver(receiver, filter)
     }
     override fun onCancel(p0: Any){}
 }

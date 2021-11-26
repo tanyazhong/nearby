@@ -10,7 +10,7 @@ import 'logic/database_entry.dart';
 
 ///callback top level function that adds currently playing song with current location to database
 void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackID) async {
-  print("running callback");
+  print("running callback, trackid is $trackID");
   LocationData location = await locate().findLocation();
   //Player currentlyPlaying = await spotify.me.currentlyPlaying();
   User user = await spotify.me.get();
@@ -38,6 +38,7 @@ class TrackChange extends ChangeNotifier{
     this.spotifyApi = spotifyApi;
   //  _handleTrackChanges();
     _createMethodChannel();
+    _handleTrackChanges();
   }
 
   void _handleTrackChanges(){

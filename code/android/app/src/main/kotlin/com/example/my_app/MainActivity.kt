@@ -16,6 +16,7 @@ import androidx.annotation.NonNull
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "method"
     private val EVENT = "track_change"
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
@@ -26,29 +27,11 @@ class MainActivity : FlutterActivity() {
                 println("failed")
             }
         }
-        EventChannel(flutterEngine.dartExecutor.binaryMessenger, EVENT).setStreamHandler{
-           object: EventChannel.StreamHandler{
-               private var eventSink: EventChannel.EventSink? = null
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, EVENT).setStreamHandler(EventStreamHandler(context))
 
-               override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink?) {
-                   println("onListen")
-                   this.eventSink = eventSink;
-                   /*val receiver = SpotifyBroadcastReceiver()
-                   receiver.setListener(object : SpotifyTrackChangeListener() {
-                       override fun onTrackChange(trackID: String?) {
-                           if (trackID != null) {
-                               println("success");
-                               eventSink!!.success(trackID);
-                           }
-                       }
-                   })
-           */
-               }
-               override fun onCancel(p0: Any){}
-           }
         }
     }
-}
+
   // println("inside main activity")
   /* var eventStreamHandler: EventStreamHandler? = null
    override fun onCreate(savedInstanceState: Bundle?){
