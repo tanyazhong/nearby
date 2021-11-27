@@ -117,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // String displayName =
     //     await apiInstance!.getUserDisplayName("cif5mulm9m0s5jev1kwpmbjz7");
     // print(displayName);
-    Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
   void lurk() {
