@@ -34,16 +34,24 @@ abstract class SongState extends State<StatefulWidget> {
       } else {
         temp = track.artists![i].name! + ', ';
       }
+      //   list.add(Text(
+      //     temp!,
+      //     style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),
+      //   ));
+      // }
+      // if (alignLeft) {
+      //   return Row(
+      //     children: list,
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //   );
       list.add(Text(
         temp!,
-        style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),
+        style: TextStyle(
+          fontFamily: 'Acme',
+          fontSize: fontSize,
+          overflow: TextOverflow.ellipsis,
+        ),
       ));
-    }
-    if (alignLeft) {
-      return Row(
-        children: list,
-        mainAxisAlignment: MainAxisAlignment.start,
-      );
     }
     return Row(
       children: list,
@@ -51,7 +59,7 @@ abstract class SongState extends State<StatefulWidget> {
     );
   }
 
-  Widget songContainer() {
+  Widget songContainer(bool overflow) {
     return FutureBuilder(
         future: API().authenticate().tracks.get(trackID),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -61,19 +69,37 @@ abstract class SongState extends State<StatefulWidget> {
             return GestureDetector(
               onTap: onTap,
               child: Container(
-                  alignment: Alignment.center,
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                            padding: EdgeInsets.all(20),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: API().imageUrl(track.album!)),
-                            )),
+                        //                 Padding(
+                        //       padding: EdgeInsets.all(20),
+                        //       child: ClipRRect(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(30)),
+                        //         child: FadeInImage.memoryNetwork(
+                        //             placeholder: kTransparentImage,
+                        //             image: API().imageUrl(track.album!)),
+                        //       )),
+                        //   Text(
+                        //     '${track.name}',
+                        //     style: TextStyle(
+                        //       fontFamily: 'Acme',
+                        //       fontSize: fontSize + 10,
+                        //     ),
+                        //     textAlign: TextAlign.center,
+                        //   ),
+                        //   artistList(track),
+                        // ])),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: API().imageUrl(track.album!)),
+                        ),
                         Text(
                           '${track.name}',
                           style: TextStyle(
@@ -81,9 +107,12 @@ abstract class SongState extends State<StatefulWidget> {
                             fontSize: fontSize + 10,
                           ),
                           textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         artistList(track),
-                      ])),
+                      ]),
+                ),
+              ),
             );
           } else {
             return const Center(
@@ -142,7 +171,7 @@ class _SongPageState extends SongState {
         centerTitle: true,
         toolbarHeight: 50,
       ),
-      body: songContainer(),
+      body: songContainer(false),
     );
   }
 }
@@ -183,7 +212,7 @@ class _SongWidgetState extends SongState {
   ///Displays the page and calls [artistList()]
   @override
   Widget build(BuildContext context) {
-    return songContainer();
+    return songContainer(true);
   }
 }
 

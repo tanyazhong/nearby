@@ -45,6 +45,13 @@
             <data android:scheme="nearby" />
           </intent-filter>
         </activity>
+       <receiver android:name="SpotifyBroadcastReceiver"
+           android:enabled="true"
+           android:exported="true">
+           <intent-filter>
+               <action android:name="com.spotify.music.metadatachanged"/>
+           </intent-filter>
+       </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
