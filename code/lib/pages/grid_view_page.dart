@@ -36,7 +36,7 @@ class _GridViewPageState extends State<GridViewPage> {
     LocationData location = await locate().findLocation();
     Player currentlyPlaying = await spotify.me.currentlyPlaying();
     User user = await spotify.me.get();
-    if (MongoDatabase.songCollection == null){
+    if (MongoDatabase.songCollection == null) {
       await MongoDatabase.connect();
       print('had to connect to db');
     }
@@ -47,7 +47,6 @@ class _GridViewPageState extends State<GridViewPage> {
     entry.lat = location.latitude.toString();
     print('lat is ${entry.lat}, lon is ${entry.lon}');
     await MongoDatabase.insert(entry);
-
   }
 
   void _onRadiusChanged(FilterValues values) {
@@ -96,7 +95,8 @@ class _GridViewPageState extends State<GridViewPage> {
       ),
       body: FutureBuilder<dynamic>(
         //34.06892, -118.445183, 20
-        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
+        future:
+            MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
@@ -185,7 +185,7 @@ class _GridViewPageState extends State<GridViewPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> addCurrentlyPlayingToDB(argumentSpotify),
+        onPressed: () => addCurrentlyPlayingToDB(argumentSpotify),
         tooltip: 'Update Text',
         child: const Icon(Icons.library_music),
       ),

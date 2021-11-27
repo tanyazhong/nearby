@@ -118,12 +118,16 @@ class API {
     );
 
     for (String uri in songURIs) {
-      if (uri.startsWith("spotify:track:")) {
-        await spotify.playlists.addTrack(uri, newPlaylist.id!);
-      } else {
-        // Need to prepend spotify URI info
-        await spotify.playlists
-            .addTrack("spotify:track:" + uri, newPlaylist.id!);
+      try {
+        if (uri.startsWith("spotify:track:")) {
+          await spotify.playlists.addTrack(uri, newPlaylist.id!);
+        } else {
+          // Need to prepend spotify URI info
+          await spotify.playlists
+              .addTrack("spotify:track:" + uri, newPlaylist.id!);
+        }
+      } on Exception catch (e) {
+        print(e);
       }
     }
 

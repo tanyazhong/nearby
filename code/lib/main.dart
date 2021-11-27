@@ -87,15 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     apiInstance = API();
-
   }
 
   void share() async {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
 
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
-    var recentlyPlayed = await apiInstance!.getRecentlyPlayed(10);
+    var recentlyPlayed = await apiInstance!.getRecentlyPlayed(5);
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
+
+    User account = await spotify.me.get();
+    for (PlayHistory song in recentlyPlayed) {
+      await addSongToDB(account.id, song.track!.id!);
+    }
     TrackChange(spotify);
     // example usage of some of the API functions
 
