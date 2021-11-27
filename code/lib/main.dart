@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'Welcome!'),
         '/grid_view': (context) => GridViewPage(),
+        '/profile': (context) => ProfilePage()
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -124,8 +125,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
-  void profile() {
-    SpotifyApi spotify = apiInstance!.authenticate();
+  void profile() async {
+    SpotifyApi spotify = await apiInstance!.authenticate();
+    Navigator.pushNamed(context, '/profile', arguments: spotify);
+    /*
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -133,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return ProfilePage();
         },
       ),
-    );
+     */
   }
 
   @override
@@ -180,69 +183,88 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.all(15),
-              color: Color.fromRGBO(169, 209, 142, 1),
-              child: widgets.Image.asset(
-                "assets/nearby_logo.png",
-                alignment: Alignment.center,
-                scale: .8,
+                margin: EdgeInsets.all(15),
+                color: Color.fromRGBO(169, 209, 142, 1),
+                child: widgets.Image.asset(
+                  "assets/nearby_logo.png",
+                  alignment: Alignment.center,
+                  scale: 1,
+                ),
               ),
-            ),
 
-            ElevatedButton(
-              onPressed: share,
-              child: Text("Share!",
-                  style: TextStyle(fontSize: 17, color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: share,
+                child: Text("Share!",
+                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  fixedSize: const Size(330, 50),
                 ),
-                fixedSize: const Size(330, 50),
               ),
             ),
-            ElevatedButton(
-              onPressed: lurk,
-              child: Text("Lurk",
-                  style: TextStyle(fontSize: 17, color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+            const SizedBox(
+              height: 10
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: lurk,
+                child: Text("Lurk",
+                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  fixedSize: const Size(330, 50),
                 ),
-                fixedSize: const Size(330, 50),
               ),
             ),
-            // testing profile page with this button, we can move it elsewhere for the final product.
-            ElevatedButton(
-              onPressed: profile,
-              child: Text("Profile",
-                  style: TextStyle(fontSize: 17, color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+            const SizedBox(
+                height: 10
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: profile,
+                child: Text("Profile",
+                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  fixedSize: const Size(330, 50),
                 ),
-                fixedSize: const Size(330, 50),
               ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                print("locating!");
-                var pleaseWork = locate();
-                // waits until location service is enabled
-                var serviceStatus = await pleaseWork.checkLocationService();
-                print("checked: service status is $serviceStatus");
-                // waits until user gives their permission to share location
-                var permissionStatus = await pleaseWork.checkPermission();
-                print("permission: permission status is $permissionStatus");
-                var backgroundPermission =
-                    await pleaseWork.backgroundPermission();
-                print("background permission status is $backgroundPermission");
-                // finding user location
-                LocationData loc = await pleaseWork.findLocation();
+            const SizedBox(
+                height: 10
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () async {
+                  print("locating!");
+                  var pleaseWork = locate();
+                  // waits until location service is enabled
+                  var serviceStatus = await pleaseWork.checkLocationService();
+                  print("checked: service status is $serviceStatus");
+                  // waits until user gives their permission to share location
+                  var permissionStatus = await pleaseWork.checkPermission();
+                  print("permission: permission status is $permissionStatus");
+                  var backgroundPermission =
+                  await pleaseWork.backgroundPermission();
+                  print("background permission status is $backgroundPermission");
+                  // finding user location
+                  LocationData loc = await pleaseWork.findLocation();
 
-                // can push back loc.latitude and loc.longitude onto latLon object
-                print(loc);
-              },
-              child: const Text('print location'),
+                  // can push back loc.latitude and loc.longitude onto latLon object
+                  print(loc);
+                },
+                child: const Text('print location'),
+              ),
+            ),
+            const SizedBox(
+                height: 10
             ),
           ],
         ),
