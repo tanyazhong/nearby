@@ -182,7 +182,11 @@ class _GridViewPageState extends State<GridViewPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+<<<<<<< HEAD
         onPressed: () => generatePlaylist(argumentSpotify),
+=======
+        onPressed: () => addCurrentlyPlayingToDB(argumentSpotify),
+>>>>>>> e771928612405c4d7b945beccc4e2cf5975d7f2c
         tooltip: 'Update Text',
         child: const Icon(Icons.library_music),
       ),
