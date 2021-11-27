@@ -65,15 +65,12 @@ abstract class SongState extends State<StatefulWidget> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                            padding: EdgeInsets.all(20),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: API().imageUrl(track.album!)),
-                            )),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: API().imageUrl(track.album!)),
+                        ),
                         Text(
                           '${track.name}',
                           style: TextStyle(
