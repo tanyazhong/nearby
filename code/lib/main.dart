@@ -84,10 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Track? track;
   API? apiInstance;
   bool trackSet = false;
+  TrackChange? trackChange;
 
   @override
   initState() {
     apiInstance = API();
+    trackChange = TrackChange();
   }
 
   void share() async {
@@ -101,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     for (PlayHistory song in recentlyPlayed) {
       await addSongToDB(account.id, song.track!.id!);
     }
-    TrackChange(spotify);
+    trackChange!.handleTrackChanges(spotify);
     // example usage of some of the API functions
 
     // Iterable<dynamic> dbSongs =
