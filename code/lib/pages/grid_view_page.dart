@@ -31,23 +31,19 @@ class _GridViewPageState extends State<GridViewPage> {
     });
   }
 
-  //to check that currently playing song can be added to database
-  void addCurrentlyPlayingToDB(SpotifyApi spotify) async {
+  /// When the createPlaylist button is pressed, creates a playlist
+  void generatePlaylist(SpotifyApi spotify) async {
     LocationData location = await locate().findLocation();
-    Player currentlyPlaying = await spotify.me.currentlyPlaying();
-    User user = await spotify.me.get();
-    if (MongoDatabase.songCollection == null){
-      await MongoDatabase.connect();
-      print('had to connect to db');
+    dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
+        location.latitude!, location.longitude!, _radius);
+    List<String> songUIs = [];
+    for (dynamic song in nearbySongs) {
+      songUIs.add(song[0]);
     }
-    DatabaseEntry entry = DatabaseEntry();
-    entry.userId = user.id;
-    entry.songId = currentlyPlaying.item!.id;
-    entry.lon = location.longitude.toString();
-    entry.lat = location.latitude.toString();
-    print('lat is ${entry.lat}, lon is ${entry.lon}');
-    await MongoDatabase.insert(entry);
-
+    Iterable<String> iterableURIs = songUIs;
+    API userAPI = API();
+    userAPI.spotify = spotify;
+    await userAPI.createPlaylist(iterableURIs);
   }
 
   void _onRadiusChanged(FilterValues values) {
@@ -96,7 +92,8 @@ class _GridViewPageState extends State<GridViewPage> {
       ),
       body: FutureBuilder<dynamic>(
         //34.06892, -118.445183, 20
-        future: MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
+        future:
+            MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
@@ -185,7 +182,7 @@ class _GridViewPageState extends State<GridViewPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> addCurrentlyPlayingToDB(argumentSpotify),
+        onPressed: () => generatePlaylist(argumentSpotify),
         tooltip: 'Update Text',
         child: const Icon(Icons.library_music),
       ),
