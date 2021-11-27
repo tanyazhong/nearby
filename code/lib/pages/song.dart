@@ -34,16 +34,6 @@ abstract class SongState extends State<StatefulWidget> {
       } else {
         temp = track.artists![i].name! + ', ';
       }
-      //   list.add(Text(
-      //     temp!,
-      //     style: TextStyle(fontFamily: 'Acme', fontSize: fontSize),
-      //   ));
-      // }
-      // if (alignLeft) {
-      //   return Row(
-      //     children: list,
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //   );
       list.add(Text(
         temp!,
         style: TextStyle(
@@ -52,6 +42,12 @@ abstract class SongState extends State<StatefulWidget> {
           overflow: TextOverflow.ellipsis,
         ),
       ));
+    }
+    if (alignLeft) {
+      return Row(
+        children: list,
+        mainAxisAlignment: MainAxisAlignment.start,
+      );
     }
     return Row(
       children: list,
@@ -75,25 +71,6 @@ abstract class SongState extends State<StatefulWidget> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //                 Padding(
-                        //       padding: EdgeInsets.all(20),
-                        //       child: ClipRRect(
-                        //         borderRadius:
-                        //             BorderRadius.all(Radius.circular(30)),
-                        //         child: FadeInImage.memoryNetwork(
-                        //             placeholder: kTransparentImage,
-                        //             image: API().imageUrl(track.album!)),
-                        //       )),
-                        //   Text(
-                        //     '${track.name}',
-                        //     style: TextStyle(
-                        //       fontFamily: 'Acme',
-                        //       fontSize: fontSize + 10,
-                        //     ),
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        //   artistList(track),
-                        // ])),
                         ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                           child: FadeInImage.memoryNetwork(

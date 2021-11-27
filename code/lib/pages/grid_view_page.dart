@@ -62,7 +62,7 @@ class _GridViewPageState extends State<GridViewPage> {
     FilterValues filterValues = FilterValues();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'nEARby',
           style: TextStyle(color: Colors.black, fontSize: 35),
           textAlign: TextAlign.center,
@@ -112,7 +112,9 @@ class _GridViewPageState extends State<GridViewPage> {
                             mainAxisSpacing: 0),
                     itemCount: data.length,
                     itemBuilder: (BuildContext ctx, index) {
-                      return SongWidget(trackID: data[index][0]);
+                      return Container(
+                          height: 300,
+                          child: SongWidget(trackID: data[index][0]));
                     }),
               );
             } else {
