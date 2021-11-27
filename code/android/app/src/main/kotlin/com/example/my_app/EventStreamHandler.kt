@@ -28,5 +28,6 @@ class EventStreamHandler(val context:Context) : EventChannel.StreamHandler{
         val filter = IntentFilter("com.spotify.music.metadatachanged")
         context.registerReceiver(receiver, filter)
     }
-    override fun onCancel(p0: Any){}
+    override fun onCancel(p0: Any){
+    }
 }

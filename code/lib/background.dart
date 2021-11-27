@@ -47,31 +47,21 @@ void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackID) async {
 class TrackChange extends ChangeNotifier {
   String? trackID;
   SpotifyApi? spotifyApi;
+  bool eventChannelActive = false;
 
-  @override
-  TrackChange(SpotifyApi spotifyApi) {
-    print("track change constructor");
-    this.spotifyApi = spotifyApi;
-    //  _handleTrackChanges();
-    _createMethodChannel();
-    _handleTrackChanges();
-  }
 
-  void _handleTrackChanges() {
+  void handleTrackChanges(SpotifyApi spotify) {
     print("handleTrackChanges");
-    const EventChannel _stream = EventChannel('track_change');
-    _stream.receiveBroadcastStream().listen((event) {
-      print("received broadcast in dart");
-      addCurrentlyPlayingToDB(spotifyApi!, event);
-    });
-  }
-
-  void _createMethodChannel() async {
-    const MethodChannel _method = MethodChannel('method');
-    try {
-      int result = await _method.invokeMethod('try');
-    } on PlatformException catch (e) {
-      print("method got caught in error");
+    this.spotifyApi = spotify;
+    if(eventChannelActive== false){
+      const EventChannel _stream = EventChannel('track_change');
+      _stream.receiveBroadcastStream().listen((event) {
+        print("received broadcast in dart");
+        addCurrentlyPlayingToDB(spotifyApi!, event);
+      });
+      eventChannelActive = true;
     }
   }
+
+
 }
