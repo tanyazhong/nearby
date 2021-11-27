@@ -19,16 +19,9 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
-            if (call.method == "try") {
-                println("success")
-                result.success(1)
-            } else {
-                println("failed")
-            }
-        }
         EventChannel(flutterEngine.dartExecutor.binaryMessenger, EVENT).setStreamHandler(EventStreamHandler(context))
 
         }
+
     }
 

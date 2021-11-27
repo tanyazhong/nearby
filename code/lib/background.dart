@@ -53,7 +53,7 @@ class TrackChange extends ChangeNotifier {
     print("track change constructor");
     this.spotifyApi = spotifyApi;
     //  _handleTrackChanges();
-    _createMethodChannel();
+   // _createMethodChannel();
     _handleTrackChanges();
   }
 
@@ -66,12 +66,5 @@ class TrackChange extends ChangeNotifier {
     });
   }
 
-  void _createMethodChannel() async {
-    const MethodChannel _method = MethodChannel('method');
-    try {
-      int result = await _method.invokeMethod('try');
-    } on PlatformException catch (e) {
-      print("method got caught in error");
-    }
-  }
+
 }
