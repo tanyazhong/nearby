@@ -112,9 +112,11 @@ class _GridViewPageState extends State<GridViewPage> {
                             mainAxisSpacing: 0),
                     itemCount: data.length,
                     itemBuilder: (BuildContext ctx, index) {
+                      var uid = data[index][1];
+                      debugPrint("user id: $uid");
                       return Container(
                           height: 300,
-                          child: SongWidget(trackID: data[index][0]));
+                          child: SongWidget(trackID: data[index][0], userID: data[index][1].toString()));
                     }),
               );
             } else {
@@ -124,7 +126,7 @@ class _GridViewPageState extends State<GridViewPage> {
                     itemExtent: 70,
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListSongWidget(trackID: data[index][0]);
+                      return ListSongWidget(trackID: data[index][0], userID: data[index][1].toString());
                     }),
               );
             }

@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:my_app/api.dart';
 import 'package:spotify/spotify.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:my_app/pages/profile_page.dart';
 
 abstract class SongState extends State<StatefulWidget> {
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
   double fontSize;
-
-  SongState({required this.trackID, required this.fontSize});
+  String userID;
+  SongState({required this.trackID, required this.fontSize, required this.userID});
 
   Widget build(BuildContext context);
   void onTap();
@@ -111,14 +112,14 @@ abstract class SongState extends State<StatefulWidget> {
 class SongPage extends StatefulWidget {
   ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   final String trackID;
-
-  const SongPage({Key? key, required this.trackID}) : super(key: key);
+  final String userID;
+  const SongPage({Key? key, required this.trackID, required this.userID}) : super(key: key);
 
   @override
 
   ///Creates mutable state for Song at a given location in the tree
   _SongPageState createState() =>
-      _SongPageState(trackID: trackID, fontSize: 20);
+      _SongPageState(trackID: trackID, fontSize: 20, userID: userID);
 }
 
 ///Class that holds the state of [Song] and displays the song page
@@ -128,14 +129,16 @@ class _SongPageState extends SongState {
   String? imageUrl;
   String trackID;
   double fontSize;
-  _SongPageState({required this.trackID, required this.fontSize})
-      : super(trackID: trackID, fontSize: fontSize);
+  String userID;
+  _SongPageState({required this.trackID, required this.fontSize, required this.userID})
+      : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {}
 
   ///Displays the page and calls [artistList()]
   @override
   Widget build(BuildContext context) {
+    final icon = CupertinoIcons.profile_circled;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -147,6 +150,21 @@ class _SongPageState extends SongState {
         shadowColor: Colors.transparent,
         centerTitle: true,
         toolbarHeight: 50,
+        actions: [
+          IconButton(
+            icon: Icon(icon),
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return ProfilePage(userID: userID,);
+                    },
+                  )
+              );
+            }
+          ),
+        ]
       ),
       body: songContainer(false),
     );
@@ -157,14 +175,14 @@ class _SongPageState extends SongState {
 class SongWidget extends StatefulWidget {
   ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
-
-  const SongWidget({Key? key, required this.trackID}) : super(key: key);
+  final String userID;
+  const SongWidget({Key? key, required this.trackID, required this.userID}) : super(key: key);
 
   @override
 
   ///Creates mutable state for Song at a given location in the tree
   _SongWidgetState createState() =>
-      _SongWidgetState(trackID: trackID, fontSize: 10);
+      _SongWidgetState(trackID: trackID, fontSize: 10, userID: userID);
 }
 
 ///Class that holds the state of [SongWidget] and displays the song page
@@ -172,9 +190,9 @@ class _SongWidgetState extends SongState {
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
   double fontSize;
-
-  _SongWidgetState({required this.trackID, required this.fontSize})
-      : super(trackID: trackID, fontSize: fontSize);
+  String userID;
+  _SongWidgetState({required this.trackID, required this.fontSize, required this.userID})
+      : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {
     Navigator.push(
@@ -182,6 +200,7 @@ class _SongWidgetState extends SongState {
         MaterialPageRoute(
           builder: (_) => SongPage(
             trackID: trackID,
+            userID: userID
           ),
         ));
   }
@@ -197,14 +216,14 @@ class _SongWidgetState extends SongState {
 class ListSongWidget extends StatefulWidget {
   ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
-
-  const ListSongWidget({Key? key, required this.trackID}) : super(key: key);
+  final String userID;
+  const ListSongWidget({Key? key, required this.trackID, required this.userID}) : super(key: key);
 
   @override
 
   ///Creates mutable state for Song at a given location in the tree
   _ListSongWidgetState createState() =>
-      _ListSongWidgetState(trackID: trackID, fontSize: 10);
+      _ListSongWidgetState(trackID: trackID, fontSize: 10, userID: userID);
 }
 
 ///Class that holds the state of [ListSongWidget] and displays the song page
@@ -212,9 +231,9 @@ class _ListSongWidgetState extends SongState {
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
   double fontSize;
-
-  _ListSongWidgetState({required this.trackID, required this.fontSize})
-      : super(trackID: trackID, fontSize: fontSize);
+  String userID;
+  _ListSongWidgetState({required this.trackID, required this.fontSize, required this.userID})
+      : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {
     Navigator.push(
@@ -222,6 +241,7 @@ class _ListSongWidgetState extends SongState {
         MaterialPageRoute(
           builder: (_) => SongPage(
             trackID: trackID,
+            userID: userID
           ),
         ));
   }

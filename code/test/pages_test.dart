@@ -20,7 +20,7 @@ void main() {
   group('SongPage', ()
   {
     test('Song Page will return Widget from artistList()', () {
-      expect(SongWidget(trackID: '4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f')
+      expect(SongWidget(trackID: '4pvb0WLRcMtbPGmtejJJ6y?si=c123ba3cb2274b8f', userID: '1234')
           .createState()
           .artistList(Track()) is Widget, true);
     });

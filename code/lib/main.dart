@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'Welcome!'),
         '/grid_view': (context) => GridViewPage(),
-        '/profile': (context) => ProfilePage()
+        // '/profile': (context) => ProfilePage()
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -127,17 +127,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void profile() async {
-    SpotifyApi spotify = await apiInstance!.authenticate();
-    Navigator.pushNamed(context, '/profile', arguments: spotify);
-    /*
+    SpotifyApi spotify = await apiInstance!.authenticateUser();
+    var credentials = await spotify.getCredentials();
+    String? id = credentials.clientId;
+    // Navigator.pushNamed(context, '/profile', arguments: id);
+    // String displayName = await apiInstance!.getUserDisplayName("cif5mulm9m0s5jev1kwpmbjz7");
+    // print("PLEASE");
+    // print(displayName);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return ProfilePage();
+          return ProfilePage(userID: '$id',);
         },
-      ),
-     */
+      )
+    );
   }
 
   @override
@@ -193,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
-            Expanded(
+            Container(
               child: ElevatedButton(
                 onPressed: share,
                 child: Text("Share!",
@@ -207,9 +211,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(
-              height: 10
+              height: 5
             ),
-            Expanded(
+            Container(
               child: ElevatedButton(
                 onPressed: lurk,
                 child: Text("Lurk",
@@ -223,8 +227,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(
-                height: 10
+                height: 15
             ),
+            /*
             Expanded(
               child: ElevatedButton(
                 onPressed: profile,
@@ -241,6 +246,8 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
                 height: 10
             ),
+
+
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
@@ -264,6 +271,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text('print location'),
               ),
             ),
+
+             */
             const SizedBox(
                 height: 10
             ),
