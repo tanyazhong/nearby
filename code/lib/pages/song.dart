@@ -13,7 +13,8 @@ abstract class SongState extends State<StatefulWidget> {
   String trackID;
   double fontSize;
   String userID;
-  SongState({required this.trackID, required this.fontSize, required this.userID});
+  SongState(
+      {required this.trackID, required this.fontSize, required this.userID});
 
   Widget build(BuildContext context);
   void onTap();
@@ -50,7 +51,7 @@ abstract class SongState extends State<StatefulWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
       );
     }
-    return Row(
+    return Column(
       children: list,
       mainAxisAlignment: MainAxisAlignment.center,
     );
@@ -113,7 +114,8 @@ class SongPage extends StatefulWidget {
   ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   final String trackID;
   final String userID;
-  const SongPage({Key? key, required this.trackID, required this.userID}) : super(key: key);
+  const SongPage({Key? key, required this.trackID, required this.userID})
+      : super(key: key);
 
   @override
 
@@ -130,7 +132,8 @@ class _SongPageState extends SongState {
   String trackID;
   double fontSize;
   String userID;
-  _SongPageState({required this.trackID, required this.fontSize, required this.userID})
+  _SongPageState(
+      {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {}
@@ -141,31 +144,28 @@ class _SongPageState extends SongState {
     final icon = CupertinoIcons.profile_circled;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          ' ',
-          style: TextStyle(color: Colors.black, fontSize: 35),
-          textAlign: TextAlign.center,
-        ),
-        backgroundColor: Colors.white,
-        shadowColor: Colors.transparent,
-        centerTitle: true,
-        toolbarHeight: 50,
-        actions: [
-          IconButton(
-            icon: Icon(icon),
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return ProfilePage(userID: userID,);
-                    },
-                  )
-              );
-            }
+          title: const Text(
+            ' ',
+            style: TextStyle(color: Colors.black, fontSize: 35),
+            textAlign: TextAlign.center,
           ),
-        ]
-      ),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+          toolbarHeight: 50,
+          actions: [
+            IconButton(
+                icon: Icon(icon),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return ProfilePage(
+                        userID: userID,
+                      );
+                    },
+                  ));
+                }),
+          ]),
       body: songContainer(false),
     );
   }
@@ -176,7 +176,8 @@ class SongWidget extends StatefulWidget {
   ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
   final String userID;
-  const SongWidget({Key? key, required this.trackID, required this.userID}) : super(key: key);
+  const SongWidget({Key? key, required this.trackID, required this.userID})
+      : super(key: key);
 
   @override
 
@@ -191,17 +192,15 @@ class _SongWidgetState extends SongState {
   String trackID;
   double fontSize;
   String userID;
-  _SongWidgetState({required this.trackID, required this.fontSize, required this.userID})
+  _SongWidgetState(
+      {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => SongPage(
-            trackID: trackID,
-            userID: userID
-          ),
+          builder: (_) => SongPage(trackID: trackID, userID: userID),
         ));
   }
 
@@ -217,7 +216,8 @@ class ListSongWidget extends StatefulWidget {
   ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
   final String trackID;
   final String userID;
-  const ListSongWidget({Key? key, required this.trackID, required this.userID}) : super(key: key);
+  const ListSongWidget({Key? key, required this.trackID, required this.userID})
+      : super(key: key);
 
   @override
 
@@ -232,17 +232,15 @@ class _ListSongWidgetState extends SongState {
   String trackID;
   double fontSize;
   String userID;
-  _ListSongWidgetState({required this.trackID, required this.fontSize, required this.userID})
+  _ListSongWidgetState(
+      {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
   void onTap() {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => SongPage(
-            trackID: trackID,
-            userID: userID
-          ),
+          builder: (_) => SongPage(trackID: trackID, userID: userID),
         ));
   }
 
@@ -258,9 +256,12 @@ class _ListSongWidgetState extends SongState {
             return GestureDetector(
                 onTap: onTap,
                 child: ListTile(
-                    leading: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: API().imageUrl(track.album!)),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                      child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: API().imageUrl(track.album!)),
+                    ),
                     title: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
