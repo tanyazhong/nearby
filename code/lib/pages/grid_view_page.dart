@@ -23,7 +23,7 @@ class _GridViewPageState extends State<GridViewPage> {
   String textToShow = "I Like Flutter";
   double _radius = 20;
   bool _gridView = true;
-
+  FilterValues filterValues = FilterValues();
   void _updateText() {
     setState(() {
       // update the text
@@ -64,7 +64,7 @@ class _GridViewPageState extends State<GridViewPage> {
   Widget build(BuildContext context) {
     final argumentSpotify =
         ModalRoute.of(context)!.settings.arguments as SpotifyApi;
-    FilterValues filterValues = FilterValues();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
