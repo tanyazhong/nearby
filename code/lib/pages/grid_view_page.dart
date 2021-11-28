@@ -116,7 +116,9 @@ class _GridViewPageState extends State<GridViewPage> {
                       debugPrint("user id: $uid");
                       return Container(
                           height: 300,
-                          child: SongWidget(trackID: data[index][0], userID: data[index][1].toString()));
+                          child: SongWidget(
+                              trackID: data[index][0],
+                              userID: data[index][1].toString()));
                     }),
               );
             } else {
@@ -126,7 +128,10 @@ class _GridViewPageState extends State<GridViewPage> {
                     itemExtent: 70,
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListSongWidget(trackID: data[index][0], userID: data[index][1].toString());
+                      return Container(
+                          child: ListSongWidget(
+                              trackID: data[index][0],
+                              userID: data[index][1].toString()));
                     }),
               );
             }
@@ -158,6 +163,7 @@ class _GridViewPageState extends State<GridViewPage> {
                 child: Text('Loading...'),
               )
             ];
+
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -168,9 +174,22 @@ class _GridViewPageState extends State<GridViewPage> {
           }
         },
       ),
+      // floatingActionButton: Container(
+      //   height: 60,
+      //   width: 60,
+      //   child: FittedBox(
+      //     child: FloatingActionButton(
+      //         onPressed: () => generatePlaylist(argumentSpotify),
+      //         tooltip: 'Make Playlist',
+      //         child: Column(children: <Widget>[
+      //           Container(height: 20),
+      //           const Icon(Icons.library_music)
+      //         ])),
+      //   ),
+      // )
       floatingActionButton: FloatingActionButton(
         onPressed: () => generatePlaylist(argumentSpotify),
-        tooltip: 'Update Text',
+        tooltip: 'Make Playlist',
         child: const Icon(Icons.library_music),
       ),
     );
@@ -178,3 +197,4 @@ class _GridViewPageState extends State<GridViewPage> {
 }
 
 //on press check for currently playing then upload to database
+
