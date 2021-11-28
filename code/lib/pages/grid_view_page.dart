@@ -33,23 +33,26 @@ class _GridViewPageState extends State<GridViewPage> {
 
   /// When the createPlaylist button is pressed, creates a playlist
   void generatePlaylist(SpotifyApi spotify) async {
-    final snackBar = SnackBar(content: const Text("Playlist generated!"));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    LocationData location = await locate().findLocation();
-    dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
-        location.latitude!, location.longitude!, _radius);
-    List<String> songUIs = [];
-    for (dynamic song in nearbySongs) {
-      songUIs.add(song[0]);
-    }
-    Iterable<String> iterableURIs = songUIs;
-    API userAPI = API();
-    userAPI.spotify = spotify;
-    await userAPI.createPlaylist(iterableURIs);
-
+    spotify.me.get().then((value) async {
+      const snackBar = SnackBar(content: Text("Playlist generated!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      LocationData location = await locate().findLocation();
+      dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
+          location.latitude!, location.longitude!, _radius);
+      List<String> songUIs = [];
+      for (dynamic song in nearbySongs) {
+        songUIs.add(song[0]);
+      }
+      Iterable<String> iterableURIs = songUIs;
+      API userAPI = API();
+      userAPI.spotify = spotify;
+      await userAPI.createPlaylist(iterableURIs);
+    }).onError((error, stackTrace) {
+      const snackBar = SnackBar(
+          content: Text("Please log in through Spotify to generate playlist!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
-
-
 
   void _onRadiusChanged(FilterValues values) {
     setState(() {
