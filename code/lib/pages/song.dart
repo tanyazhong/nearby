@@ -126,8 +126,8 @@ class SongPage extends StatefulWidget {
 
 ///Class that holds the state of [Song] and displays the song page
 class _SongPageState extends SongState {
-  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
 
+  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   String? imageUrl;
   String trackID;
   double fontSize;

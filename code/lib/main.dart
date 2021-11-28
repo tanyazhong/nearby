@@ -92,6 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
     trackChange = TrackChange();
   }
 
+
+
   void share() async {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
 

@@ -48,14 +48,15 @@ class TrackChange extends ChangeNotifier {
   String? trackID;
   SpotifyApi? spotifyApi;
   bool eventChannelActive = false;
+  EventChannel? _stream;
 
 
   void handleTrackChanges(SpotifyApi spotify) {
     print("handleTrackChanges");
     this.spotifyApi = spotify;
     if(eventChannelActive== false){
-      const EventChannel _stream = EventChannel('track_change');
-      _stream.receiveBroadcastStream().listen((event) {
+      _stream = EventChannel('track_change');
+      _stream!.receiveBroadcastStream().listen((event) {
         print("received broadcast in dart");
         addCurrentlyPlayingToDB(spotifyApi!, event);
       });

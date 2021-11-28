@@ -33,6 +33,8 @@ class _GridViewPageState extends State<GridViewPage> {
 
   /// When the createPlaylist button is pressed, creates a playlist
   void generatePlaylist(SpotifyApi spotify) async {
+    final snackBar = SnackBar(content: const Text("Playlist generated!"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     LocationData location = await locate().findLocation();
     dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
         location.latitude!, location.longitude!, _radius);
@@ -44,7 +46,10 @@ class _GridViewPageState extends State<GridViewPage> {
     API userAPI = API();
     userAPI.spotify = spotify;
     await userAPI.createPlaylist(iterableURIs);
+
   }
+
+
 
   void _onRadiusChanged(FilterValues values) {
     setState(() {
