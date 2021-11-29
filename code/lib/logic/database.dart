@@ -32,6 +32,7 @@ class MongoDatabase {
     if (d < distance) {
       return true;
     }
+    debugPrint("NOT TRUE");
     return false;
   }
 

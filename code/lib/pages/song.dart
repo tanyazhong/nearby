@@ -329,21 +329,3 @@ class _ListSongWidgetState extends SongState {
         });
   }
 }
-
-/*
-void getCurrentTrack()  {
-  print('entering getcurrentrack, spotify is $spotify');
-  if (apiInstance == null){
-    print('api null');
-  }
-  apiInstance!.currentlyPlaying().then((value){
-    print('inside then');
-    setState(() {
-      track = value;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
-    });
-    print( 'track is $track');
-  });
-  print('returning from getCurrentTrack');
-}
-*/
