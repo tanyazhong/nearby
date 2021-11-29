@@ -23,7 +23,7 @@ class _GridViewPageState extends State<GridViewPage> {
   String textToShow = "I Like Flutter";
   double _radius = 20;
   bool _gridView = true;
-
+  FilterValues filterValues = FilterValues();
   void _updateText() {
     setState(() {
       // update the text
@@ -33,23 +33,25 @@ class _GridViewPageState extends State<GridViewPage> {
 
   /// When the createPlaylist button is pressed, creates a playlist
   void generatePlaylist(SpotifyApi spotify) async {
-    final snackBar = SnackBar(content: const Text("Playlist generated!"));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    LocationData location = await locate().findLocation();
-    dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
-        location.latitude!, location.longitude!, _radius);
-    List<String> songUIs = [];
-    for (dynamic song in nearbySongs) {
-      songUIs.add(song[0]);
-    }
-    Iterable<String> iterableURIs = songUIs;
-    API userAPI = API();
-    userAPI.spotify = spotify;
-    await userAPI.createPlaylist(iterableURIs);
-
+    spotify.me.get().then((value) async {
+      const snackBar = SnackBar(content: Text("Playlist generated!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      LocationData location = await locate().findLocation();
+      dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(_radius);
+      List<String> songUIs = [];
+      for (dynamic song in nearbySongs) {
+        songUIs.add(song[0]);
+      }
+      Iterable<String> iterableURIs = songUIs;
+      API userAPI = API();
+      userAPI.spotify = spotify;
+      await userAPI.createPlaylist(iterableURIs);
+    }).onError((error, stackTrace) {
+      const snackBar = SnackBar(
+          content: Text("Please log in through Spotify to generate playlist!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
-
-
 
   void _onRadiusChanged(FilterValues values) {
     setState(() {
@@ -64,7 +66,7 @@ class _GridViewPageState extends State<GridViewPage> {
   Widget build(BuildContext context) {
     final argumentSpotify =
         ModalRoute.of(context)!.settings.arguments as SpotifyApi;
-    FilterValues filterValues = FilterValues();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -97,8 +99,7 @@ class _GridViewPageState extends State<GridViewPage> {
       ),
       body: FutureBuilder<dynamic>(
         //34.06892, -118.445183, 20
-        future:
-            MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
+        future: MongoDatabase.getNearbySongsForLoc(_radius),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {

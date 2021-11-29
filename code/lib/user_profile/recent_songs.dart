@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// WAS NOT ABLE TO IMPLEMENT THIS FEATURE IN TIME
+///
+/// Builds recently played songs with their cover image
+
 class RecentSongs extends StatelessWidget{
   final String text;
   final String cover;
@@ -30,5 +34,4 @@ class RecentSongs extends StatelessWidget{
       ),
     );
   }
-
 }

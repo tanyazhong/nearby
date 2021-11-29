@@ -8,18 +8,30 @@ import 'package:spotify/spotify.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:my_app/pages/profile_page.dart';
 
+///Abstract class that is implemented by all of the widgets and pages that display a track image, title and artist list
 abstract class SongState extends State<StatefulWidget> {
+
   ///Song ID that can be used with the spotify API to get the song's track, set in constructor
   String trackID;
+
+  ///Size of text font, implemented differently in different subclasses
   double fontSize;
+  ///Associated with each track, used to display the profile page
   String userID;
+
   SongState(
       {required this.trackID, required this.fontSize, required this.userID});
 
+  ///Abstract function that displays the various elements collected in the class\n
+  ///Takes in BuildContext by default and returns a Widget
   Widget build(BuildContext context);
+
+  ///Abstract function that determines what happens when the image is clicked on
+  ///Takes nothing and returns nothing
   void onTap();
 
   ///Displays the list of artists
+  ///Takes the Track that contains the list of artists and returns a Widget
   Widget artistList(Track track, {bool alignLeft = false}) {
     if (track.name == null) {
       return Text('Artist not available');
@@ -57,7 +69,9 @@ abstract class SongState extends State<StatefulWidget> {
     );
   }
 
-  Widget songContainer(bool overflow) {
+  ///Displays the image, track title and artist list, calls [artistList()]
+  ///Takes nothing and returns a Widget
+  Widget songContainer() {
     return FutureBuilder(
         future: API().authenticate().tracks.get(trackID),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -111,15 +125,19 @@ abstract class SongState extends State<StatefulWidget> {
 
 ///Represents the page that will display a song
 class SongPage extends StatefulWidget {
-  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
+
+  ///Track ID of the song that will be displayed, holds image url, artist names and song name
   final String trackID;
+  ///Associated with each track, used to display the profile page
   final String userID;
+
   const SongPage({Key? key, required this.trackID, required this.userID})
       : super(key: key);
 
   @override
 
-  ///Creates mutable state for Song at a given location in the tree
+  ///Creates mutable state for SongPage at a given location in the widget tree
+  ///Takes nothing and returns an instance of _SongPageState
   _SongPageState createState() =>
       _SongPageState(trackID: trackID, fontSize: 20, userID: userID);
 }
@@ -127,18 +145,25 @@ class SongPage extends StatefulWidget {
 ///Class that holds the state of [Song] and displays the song page
 class _SongPageState extends SongState {
 
-  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
+  ///Url of the track album image
   String? imageUrl;
+  ///Track of the song that will be displayed, holds image url, artist names and song name, set in constructor
   String trackID;
+  ///Size of text
   double fontSize;
+  ///Associated with each track, used to display the profile page
   String userID;
+
   _SongPageState(
       {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
+  ///Is called when the image is clicked on, does nothing
+  ///Takes and returns nothing
   void onTap() {}
 
-  ///Displays the page and calls [artistList()]
+  ///Displays the page and calls [songContainer(), onTap()]
+  ///Takes the context and returns a Widget
   @override
   Widget build(BuildContext context) {
     final icon = CupertinoIcons.profile_circled;
@@ -166,36 +191,43 @@ class _SongPageState extends SongState {
                   ));
                 }),
           ]),
-      body: songContainer(false),
+      body: songContainer(),
     );
   }
 }
 
-///Represents the page that will display a song
+///Represents the widget used in Grid view
 class SongWidget extends StatefulWidget {
-  ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
+
+  ///Track ID of the song that will be displayed, holds image url, artist names and song name
   final String trackID;
+  ///Associated with each track, used to display the profile page
   final String userID;
+
   const SongWidget({Key? key, required this.trackID, required this.userID})
       : super(key: key);
 
   @override
-
-  ///Creates mutable state for Song at a given location in the tree
+  ///Creates mutable state for [SongWidget] at a given location in the widget tree
   _SongWidgetState createState() =>
       _SongWidgetState(trackID: trackID, fontSize: 10, userID: userID);
 }
 
 ///Class that holds the state of [SongWidget] and displays the song page
 class _SongWidgetState extends SongState {
-  ///Song ID that can be used with the spotify API to get the song's track, set in constructor
+
+  ///Track ID of the song that will be displayed, holds image url, artist names and song name
   String trackID;
+  ///Size of text
   double fontSize;
+  ///Associated with each track, used to display the profile page
   String userID;
   _SongWidgetState(
       {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
+  ///Is called when the image is clicked on, pushes the SongPage to the top of the Navigation stack
+  ///Takes and returns nothing
   void onTap() {
     Navigator.push(
         context,
@@ -204,38 +236,44 @@ class _SongWidgetState extends SongState {
         ));
   }
 
-  ///Displays the page and calls [artistList()]
+  ///Displays the page and calls [songContainer()]
   @override
   Widget build(BuildContext context) {
-    return songContainer(true);
+    return songContainer();
   }
 }
 
-///Represents the page that will display a song
+///Represents the widget that is used in List view
 class ListSongWidget extends StatefulWidget {
-  ///Song ID that can be used with the spotify API to get the song's track, set in contstructor
+
+  ///Track ID of the song that will be displayed, holds image url, artist names and song name
   final String trackID;
+  ///Associated with each track, used to display the profile page
   final String userID;
+
   const ListSongWidget({Key? key, required this.trackID, required this.userID})
       : super(key: key);
 
   @override
-
-  ///Creates mutable state for Song at a given location in the tree
+  ///Creates mutable state for [ListSongWidget] at a given location in the widget tree
   _ListSongWidgetState createState() =>
       _ListSongWidgetState(trackID: trackID, fontSize: 10, userID: userID);
 }
 
 ///Class that holds the state of [ListSongWidget] and displays the song page
 class _ListSongWidgetState extends SongState {
-  ///Song ID that can be used with the spotify API to get the song's track, set in constructor
+  ///Track ID of the song that will be displayed, holds image url, artist names and song name
   String trackID;
+  ///Text size
   double fontSize;
+  ///Associated with each track, used to display the profile page
   String userID;
   _ListSongWidgetState(
       {required this.trackID, required this.fontSize, required this.userID})
       : super(trackID: trackID, fontSize: fontSize, userID: userID);
 
+  ///Is called when the image is clicked on, pushes the SongPage to the top of the Navigation stack
+  ///Takes and returns nothing
   void onTap() {
     Navigator.push(
         context,
@@ -244,7 +282,7 @@ class _ListSongWidgetState extends SongState {
         ));
   }
 
-  ///Displays the page and calls [artistList()]
+  ///Displays the page and calls [songContainer(), artistList()]
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

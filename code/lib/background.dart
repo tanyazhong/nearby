@@ -17,23 +17,23 @@ Future<void> addSongToDB(String? userID, String trackID) async {
   DatabaseEntry entry = DatabaseEntry();
   entry.userId = userID;
   entry.songId = trackID;
-  entry.lon = location.longitude.toString();
-  entry.lat = location.latitude.toString();
+  entry.lon = location.longitude;
+  entry.lat = location.latitude;
   print('lat is ${entry.lat}, lon is ${entry.lon}');
   print(entry);
   await MongoDatabase.insert(entry);
 }
 
 ///callback top level function that adds currently playing song with current location to database
-void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackID) async {
-  print("running callback, trackid is $trackID");
+void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackValue) async {
+  String trackID = trackValue.split(";")[0];
   LocationData location = await locate().findLocation();
   //Player currentlyPlaying = await spotify.me.currentlyPlaying();
   User user = await spotify.me.get();
-  if (MongoDatabase.songCollection == null) {
-    await MongoDatabase.connect();
-    print('had to connect to db');
-  }
+ // if (MongoDatabase.songCollection == null) {
+  //  await MongoDatabase.connect();
+  //  print('had to connect to db');
+  //}
   DatabaseEntry entry = DatabaseEntry();
   entry.userId = user.id;
   entry.songId = trackID;
@@ -41,7 +41,7 @@ void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackID) async {
   entry.lat = location.latitude.toString();
   print('lat is ${entry.lat}, lon is ${entry.lon}');
   print(entry);
-  await MongoDatabase.insert(entry);
+  //await MongoDatabase.insert(entry);
 }
 
 class TrackChange extends ChangeNotifier {
@@ -50,11 +50,10 @@ class TrackChange extends ChangeNotifier {
   bool eventChannelActive = false;
   EventChannel? _stream;
 
-
   void handleTrackChanges(SpotifyApi spotify) {
     print("handleTrackChanges");
     this.spotifyApi = spotify;
-    if(eventChannelActive== false){
+    if (eventChannelActive == false) {
       _stream = EventChannel('track_change');
       _stream!.receiveBroadcastStream().listen((event) {
         print("received broadcast in dart");
@@ -63,6 +62,4 @@ class TrackChange extends ChangeNotifier {
       eventChannelActive = true;
     }
   }
-
-
 }
