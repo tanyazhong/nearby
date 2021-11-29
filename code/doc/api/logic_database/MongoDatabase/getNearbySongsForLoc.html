@@ -53,9 +53,7 @@
       
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span>&gt;</span></span>
-<span class="name ">getNearbySongsForLoc</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getNearbySongsForLoc-param-lat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">lat</span>, </span></li>
-<li><span class="parameter" id="getNearbySongsForLoc-param-lon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">lon</span>, </span></li>
-<li><span class="parameter" id="getNearbySongsForLoc-param-distance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">distance</span></span></li>
+<span class="name ">getNearbySongsForLoc</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getNearbySongsForLoc-param-distance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">distance</span></span></li>
 </ol>)
 
       
@@ -70,12 +68,16 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static Future&lt;List&lt;dynamic&gt;&gt; getNearbySongsForLoc(
-    double lat, double lon, double distance) async {
+  <pre class="language-dart"><code class="language-dart">static Future&lt;List&lt;dynamic&gt;&gt; getNearbySongsForLoc(double distance) async {
   List&lt;dynamic&gt; results = [];
 
   &#47;&#47;&#47; The documents currently held in the database
   Map&lt;dynamic, dynamic&gt; documents = await MongoDatabase.getDocuments();
+
+  &#47;&#47; The users current location
+  LocationData location = await locate().findLocation();
+  double lat = location.latitude!;
+  double lon = location.longitude!;
 
   Iterable&lt;dynamic&gt; coordinates = documents.keys;
   for (var coord in coordinates) {
