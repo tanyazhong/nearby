@@ -16,5 +16,22 @@ void main() {
       var songs = a.getRecentlyPlayed(10);
       expect(songs != null, true);
     });
+
+    test('User profile is reachable', () async {
+      var a = new API();
+      await a.authenticate();
+      String testID = "cif5mulm9m0s5jev1kwpmbjz7";
+      String pic = await a.getProfileImage(testID);
+      String name = await a.getUserDisplayName(testID);
+      expect(name == "Jeffrey Chen", true);
+      expect(pic.length > 0, true);
+    });
+
+    test('Create playlists is valid', () async {
+      var a = new API();
+      await a.authenticateUser();
+      a.createPlaylist([]);
+      expect(true, true);
+    });
   });
 }
