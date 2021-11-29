@@ -102,10 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(recentlyPlayed.map((song) => song.track!.name).join(', '));
 
     User account = await spotify.me.get();
+    trackChange!.handleTrackChanges(spotify);
     for (PlayHistory song in recentlyPlayed) {
       await addSongToDB(account.id, song.track!.id!);
     }
-    trackChange!.handleTrackChanges(spotify);
+
     // example usage of some of the API functions
 
     // Iterable<dynamic> dbSongs =
@@ -198,17 +199,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   scale: 1,
                 ),
               ),
-
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               child: ElevatedButton(
                 onPressed: share,
                 child: Text("Share!",
-                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                    style: TextStyle(fontSize: 25, color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  fixedSize: const Size(330, 50),
+                  fixedSize: const Size(330, 75),
                 ),
               ),
             ),
@@ -219,12 +222,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ElevatedButton(
                 onPressed: lurk,
                 child: Text("Lurk",
-                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                    style: TextStyle(fontSize: 25, color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  fixedSize: const Size(330, 50),
+                  fixedSize: const Size(330, 75),
                 ),
               ),
             ),
