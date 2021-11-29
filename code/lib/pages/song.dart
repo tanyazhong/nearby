@@ -77,7 +77,7 @@ abstract class SongState extends State<StatefulWidget> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            print('track is $track from builder');
+            // print('track is $track from builder');
             return GestureDetector(
               onTap: onTap,
               child: Container(
@@ -290,7 +290,7 @@ class _ListSongWidgetState extends SongState {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            debugPrint('track is $track from builder');
+            // debugPrint('track is $track from builder');
             return GestureDetector(
                 onTap: onTap,
                 child: ListTile(
@@ -329,21 +329,3 @@ class _ListSongWidgetState extends SongState {
         });
   }
 }
-
-/*
-void getCurrentTrack()  {
-  print('entering getcurrentrack, spotify is $spotify');
-  if (apiInstance == null){
-    print('api null');
-  }
-  apiInstance!.currentlyPlaying().then((value){
-    print('inside then');
-    setState(() {
-      track = value;
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Song(spotify: spotify!, track: track!,),),);
-    });
-    print( 'track is $track');
-  });
-  print('returning from getCurrentTrack');
-}
-*/

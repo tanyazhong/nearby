@@ -12,7 +12,7 @@ void main() {
     });
     test('There should be > 1 result for westwood coordinates', () {
       Future<List<dynamic>> results =
-          MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 2);
+          MongoDatabase.getNearbySongsForLoc(2);
       expect(results != null, true);
     });
   });

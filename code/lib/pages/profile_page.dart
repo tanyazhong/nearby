@@ -124,7 +124,8 @@ class _ProfilePageState extends State<ProfilePage>{
                   color: Colors.red,
                   size: 60,
                 ),
-                Text('Error: ${snapshot.error}'),
+                // Text('Error: ${snapshot.error}'),
+                const Text('Error: User not found')
               ];
               return Center(
                 child: Column(
