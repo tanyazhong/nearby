@@ -60,13 +60,21 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Gets the album image URL given an album.</p>
+<p>We take as parameter an AlbumSimple object, which is the library representation of an album.
+Then, we return the url of the image by unwrapping the object.</p>
+<p>This function also adheres to the information hiding principle because changes in our
+application needs will be isolated to this function. For instance, if we only wanted
+to display imageURLs for albums that are not explicit, we could add branching logic down
+below without affecting client implementations.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">String imageUrl(AlbumSimple album) {
-  print(&#39;called in imageurl&#39;);
   String? url = album.images!.first.url;
   if (url == null) {
     return &#39;https:&#47;&#47;www.google.com&#47;imgres?imgurl=https%3A%2F%2Fbitsofco.de%2Fcontent%2Fimages%2F2018%2F12%2FScreenshot-2018-12-16-at-21.06.29.png&amp;imgrefurl=https%3A%2F%2Fbitsofco.de%2Fhandling-broken-images-with-service-worker%2F&amp;tbnid=sqE6vb3PGP0sLM&amp;vet=12ahUKEwizwuSTuYL0AhVFEFMKHbSsBewQMygLegUIARDHAQ..i&amp;docid=xVwqYIVUdXUeHM&amp;w=339&amp;h=265&amp;q=image%20not%20found&amp;ved=2ahUKEwizwuSTuYL0AhVFEFMKHbSsBewQMygLegUIARDHAQ&#39;;
@@ -118,7 +126,6 @@
     <li><a href="../../api/API/authenticateUser.html">authenticateUser</a></li>
     <li><a href="../../api/API/createPlaylist.html">createPlaylist</a></li>
     <li><a href="../../api/API/currentlyPlaying.html">currentlyPlaying</a></li>
-    <li><a href="../../api/API/followingArtists.html">followingArtists</a></li>
     <li><a href="../../api/API/getProfileImage.html">getProfileImage</a></li>
     <li><a href="../../api/API/getRecentlyPlayed.html">getRecentlyPlayed</a></li>
     <li><a href="../../api/API/getUserDisplayName.html">getUserDisplayName</a></li>
