@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:spotify/spotify.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 
@@ -103,6 +102,13 @@ class API {
 
   /// Adds provided songs into a playlist.
   ///
+  /// Returns a playlist type representing in Flutter the playlist that was just created, that should exist in the user's Spotify account.
+  /// This function takes in an iterable list of songURIs represented by songs, and then adds them all to a playlist in the user's account.
+  /// This function only needs an iterable string of songURIs, so it adheres well to the information hiding principle. This means that this API
+  /// can remain unchanged in the face of changing requirements -- for instance, if we wanted to create playlists out of song names, we could
+  /// just create a wrapper function that would map song names to songURIs.
+  /// Similarly, this function is robust in the face of switching Spotify APIs. Since we rely on an external Spotify dependency, we could swap that
+  /// API out for another one in the lines below without affecting client classes.
 
   Future<Playlist> createPlaylist(Iterable<String> songURIs) async {
     var user = await spotify.me.get();
@@ -131,6 +137,14 @@ class API {
     return newPlaylist;
   }
 
+  /// Gets the currently playing song, if any are playing.
+  ///
+  /// Takes no parameters, and returns the currently playing song of the authenticated user.
+  /// Since this function takes in no params, it adheres well to the information hiding principles.
+  /// If we wanted to change how we assess currently playing song, we can simply swap out this
+  /// implementation for another one. For instance, let's suppose that we wanted to count any
+  /// song played in the last 10 minutes as "currently playing". We could make isolated changes
+  /// to this function without touching client code.
   Future<Track> currentlyPlaying() async {
     await spotify.me.currentlyPlaying().then((Player? a) {
       if (a == null) {
@@ -155,13 +169,15 @@ class API {
     return currentTrack;
   }
 
-  Future<void> followingArtists(SpotifyApi spotify) async {
-    var cursorPage = spotify.me.following(FollowingType.artist);
-    await cursorPage.first().then((cursorPage) {
-      print(cursorPage.items!.map((artist) => artist.name).join(', '));
-    });
-  }
-
+  /// Gets the album image URL given an album.
+  ///
+  /// We take as parameter an AlbumSimple object, which is the library representation of an album.
+  /// Then, we return the url of the image by unwrapping the object.
+  ///
+  /// This function also adheres to the information hiding principle because changes in our
+  /// application needs will be isolated to this function. For instance, if we only wanted
+  /// to display imageURLs for albums that are not explicit, we could add branching logic down
+  /// below without affecting client implementations.
   String imageUrl(AlbumSimple album) {
     String? url = album.images!.first.url;
     if (url == null) {
@@ -171,14 +187,30 @@ class API {
     }
   }
 
+  /// Gets the profile image given a user id.
+  ///
+  /// We take as parameter a user's Spotify ID, and return a string pointing to
+  /// the URL of the profile picture.
+  /// This function also adheres to the information hiding principle because changes in our
+  /// application needs will be isolated to this function. For instance, if we want
+  /// userIDs to be associated to an app other than Spotify, we can use a different external
+  /// API (instead of Spotify) and still return a String containing a URL pointing to the profile
+  /// pic.
   Future<String> getProfileImage(String userID) async {
     UserPublic user = await spotify.users.get(userID);
     return user.images!.first.url!;
   }
 
+  /// Gets theuser display name given a user id.
+  ///
+  /// We take as parameter a user's Spotify ID, and return a string representing a user's display name.
+  /// This function also adheres to the information hiding principle because changes in our
+  /// application needs will be isolated to this function. For instance, if we want
+  /// userIDs to be associated to an app other than Spotify, we can use a different external
+  /// API (instead of Spotify) and still return a String representing the user's name.
+  /// pic.
   Future<String> getUserDisplayName(String userID) async {
     UserPublic user = await spotify.users.get(userID);
     return user.displayName!;
   }
 }
-
