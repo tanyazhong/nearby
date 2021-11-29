@@ -180,19 +180,7 @@ class _GridViewPageState extends State<GridViewPage> {
           }
         },
       ),
-      // floatingActionButton: Container(
-      //   height: 60,
-      //   width: 60,
-      //   child: FittedBox(
-      //     child: FloatingActionButton(
-      //         onPressed: () => generatePlaylist(argumentSpotify),
-      //         tooltip: 'Make Playlist',
-      //         child: Column(children: <Widget>[
-      //           Container(height: 20),
-      //           const Icon(Icons.library_music)
-      //         ])),
-      //   ),
-      // )
+
       floatingActionButton: FloatingActionButton(
         onPressed: () => generatePlaylist(argumentSpotify),
         tooltip: 'Make Playlist',
@@ -202,5 +190,4 @@ class _GridViewPageState extends State<GridViewPage> {
   }
 }
 
-//on press check for currently playing then upload to database
 

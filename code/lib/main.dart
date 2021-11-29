@@ -1,17 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/logic/database_entry.dart';
 import 'package:my_app/pages/profile_page.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'api.dart';
 import 'background.dart';
-import 'pages/song.dart';
 import 'package:spotify/spotify.dart';
 import 'package:flutter/src/widgets/image.dart' as widgets;
 import 'package:my_app/pages/grid_view_page.dart';
-import 'package:my_app/locate.dart';
-import 'package:my_app/logic/database.dart';
-import 'package:location/location.dart';
+
 
 void main() {
   runApp(const MyApp());

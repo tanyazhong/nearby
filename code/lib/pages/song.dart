@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:my_app/api.dart';
 import 'package:spotify/spotify.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -290,7 +289,6 @@ class _ListSongWidgetState extends SongState {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            // debugPrint('track is $track from builder');
             return GestureDetector(
                 onTap: onTap,
                 child: ListTile(

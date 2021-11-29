@@ -9,7 +9,6 @@ import 'logic/database_entry.dart';
 Future<void> addSongToDB(String? userID, String trackID) async {
   print("running add s, trackid is $trackID");
   LocationData location = await locate().findLocation();
-  //Player currentlyPlaying = await spotify.me.currentlyPlaying();
   if (MongoDatabase.songCollection == null) {
     await MongoDatabase.connect();
     print('had to connect to db');
@@ -28,12 +27,11 @@ Future<void> addSongToDB(String? userID, String trackID) async {
 void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackValue) async {
   String trackID = trackValue.split(";")[0];
   LocationData location = await locate().findLocation();
-  //Player currentlyPlaying = await spotify.me.currentlyPlaying();
   User user = await spotify.me.get();
- // if (MongoDatabase.songCollection == null) {
-  //  await MongoDatabase.connect();
-  //  print('had to connect to db');
-  //}
+  if (MongoDatabase.songCollection == null) {
+    await MongoDatabase.connect();
+    print('had to connect to db');
+  }
   DatabaseEntry entry = DatabaseEntry();
   entry.userId = user.id;
   entry.songId = trackID;
@@ -41,7 +39,7 @@ void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackValue) async {
   entry.lat = location.latitude.toString();
   print('lat is ${entry.lat}, lon is ${entry.lon}');
   print(entry);
-  //await MongoDatabase.insert(entry);
+  await MongoDatabase.insert(entry);
 }
 
 class TrackChange extends ChangeNotifier {
@@ -57,6 +55,7 @@ class TrackChange extends ChangeNotifier {
       _stream = EventChannel('track_change');
       _stream!.receiveBroadcastStream().listen((event) {
         print("received broadcast in dart");
+        trackID = event;
         addCurrentlyPlayingToDB(spotifyApi!, event);
       });
       eventChannelActive = true;
