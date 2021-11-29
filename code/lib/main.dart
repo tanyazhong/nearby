@@ -199,17 +199,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   scale: 1,
                 ),
               ),
-
+            const SizedBox(
+              height: 10,
+            ),
             Container(
               child: ElevatedButton(
                 onPressed: share,
                 child: Text("Share!",
-                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                    style: TextStyle(fontSize: 25, color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  fixedSize: const Size(330, 50),
+                  fixedSize: const Size(330, 75),
                 ),
               ),
             ),
@@ -220,12 +222,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ElevatedButton(
                 onPressed: lurk,
                 child: Text("Lurk",
-                    style: TextStyle(fontSize: 17, color: Colors.white)),
+                    style: TextStyle(fontSize: 25, color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  fixedSize: const Size(330, 50),
+                  fixedSize: const Size(330, 75),
                 ),
               ),
             ),
