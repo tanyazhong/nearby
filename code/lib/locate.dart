@@ -30,7 +30,6 @@ class locate {
   /// This provides a modular way for prompting the user to give their permission for the app to access their location . This is important because our app only works if the app has their permission to access their location
   Future<PermissionStatus> checkPermission() async {
     var _permissionGranted = await location.hasPermission();
-    //print("pls give permission");
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {

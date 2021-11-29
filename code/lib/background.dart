@@ -9,7 +9,6 @@ import 'logic/database_entry.dart';
 Future<void> addSongToDB(String? userID, String trackID) async {
   print("running add s, trackid is $trackID");
   LocationData location = await locate().findLocation();
-  //Player currentlyPlaying = await spotify.me.currentlyPlaying();
   if (MongoDatabase.songCollection == null) {
     await MongoDatabase.connect();
     print('had to connect to db');
@@ -28,7 +27,6 @@ Future<void> addSongToDB(String? userID, String trackID) async {
 void addCurrentlyPlayingToDB(SpotifyApi spotify, String trackValue) async {
   String trackID = trackValue.split(";")[0];
   LocationData location = await locate().findLocation();
-  Player currentlyPlaying = await spotify.me.currentlyPlaying();
   User user = await spotify.me.get();
   if (MongoDatabase.songCollection == null) {
     await MongoDatabase.connect();

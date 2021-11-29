@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:spotify/spotify.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 //https://pub.dev/documentation/uni_links/latest/ for uni_links
@@ -166,7 +163,6 @@ class API {
   }
 
   String imageUrl(AlbumSimple album) {
-    // print('called in imageurl');
     String? url = album.images!.first.url;
     if (url == null) {
       return 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fbitsofco.de%2Fcontent%2Fimages%2F2018%2F12%2FScreenshot-2018-12-16-at-21.06.29.png&imgrefurl=https%3A%2F%2Fbitsofco.de%2Fhandling-broken-images-with-service-worker%2F&tbnid=sqE6vb3PGP0sLM&vet=12ahUKEwizwuSTuYL0AhVFEFMKHbSsBewQMygLegUIARDHAQ..i&docid=xVwqYIVUdXUeHM&w=339&h=265&q=image%20not%20found&ved=2ahUKEwizwuSTuYL0AhVFEFMKHbSsBewQMygLegUIARDHAQ';
@@ -186,5 +182,3 @@ class API {
   }
 }
 
-//https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI?si=066eca5b3d534656  lover song
-//https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq?si=DgZmYX14RL2ANQDnd2Vidw
