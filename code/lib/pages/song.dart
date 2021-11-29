@@ -77,7 +77,7 @@ abstract class SongState extends State<StatefulWidget> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            print('track is $track from builder');
+            // print('track is $track from builder');
             return GestureDetector(
               onTap: onTap,
               child: Container(
@@ -290,7 +290,7 @@ class _ListSongWidgetState extends SongState {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             Track track = snapshot.data;
-            debugPrint('track is $track from builder');
+            // debugPrint('track is $track from builder');
             return GestureDetector(
                 onTap: onTap,
                 child: ListTile(
