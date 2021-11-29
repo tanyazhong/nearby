@@ -72,7 +72,7 @@ class _FilterPageState extends State <FilterPage>{
             Container(
               child: Column(
                 children: [
-                  Text("See music selection of people up to $radius meters away"),
+                  Text("See music selection of people up to $radius kilometers away"),
                   Slider(value: radius,
                     onChanged: (double value){
                         setState(() {
