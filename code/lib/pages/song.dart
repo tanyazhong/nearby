@@ -22,7 +22,7 @@ abstract class SongState extends State<StatefulWidget> {
   SongState(
       {required this.trackID, required this.fontSize, required this.userID});
 
-  ///Abstract function that displays the various elements collected in the class
+  ///Abstract function that displays the various elements collected in the class\n
   ///Takes in BuildContext by default and returns a Widget
   Widget build(BuildContext context);
 
