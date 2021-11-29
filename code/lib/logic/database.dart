@@ -3,8 +3,9 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:collection/collection.dart';
-
+import 'package:location/location.dart';
 import 'package:my_app/logic/database_entry.dart';
+import '../locate.dart';
 
 /// An API that controls all MongoDB controls
 class MongoDatabase {
@@ -35,12 +36,16 @@ class MongoDatabase {
   }
 
   /// Returns a list of songIds that are within distance of the provided lat and lon pair
-  static Future<List<dynamic>> getNearbySongsForLoc(
-      double lat, double lon, double distance) async {
+  static Future<List<dynamic>> getNearbySongsForLoc(double distance) async {
     List<dynamic> results = [];
 
     /// The documents currently held in the database
     Map<dynamic, dynamic> documents = await MongoDatabase.getDocuments();
+
+    // The users current location
+    LocationData location = await locate().findLocation();
+    double lat = location.latitude!;
+    double lon = location.longitude!;
 
     Iterable<dynamic> coordinates = documents.keys;
     for (var coord in coordinates) {
