@@ -41,37 +41,17 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'Welcome!'),
         '/grid_view': (context) => GridViewPage(),
-        // '/profile': (context) => ProfilePage()
       },
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: MaterialColor(0xFF5DB075, shadesOfGreen),
         scaffoldBackgroundColor: Color(0xFFFFFFFF),
       ),
-      // home: const MyHomePage(title: 'This should be LoginPage'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -92,8 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
     trackChange = TrackChange();
   }
 
-
-
   void share() async {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
 
@@ -106,25 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
       await addSongToDB(account.id, song.track!.id!);
     }
     trackChange!.handleTrackChanges(spotify);
-    // example usage of some of the API functions
-
-    // Iterable<dynamic> dbSongs =
-    //     await MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, 20);
-    // print(dbSongs);
-    // Iterable<String> testSongs = dbSongs.map((song) => song[0] as String);
-    // var p = await apiInstance!.createPlaylist(testSongs);
-    // String profileURL =
-    //     await apiInstance!.getProfileImage("cif5mulm9m0s5jev1kwpmbjz7");
-    // print(profileURL);
-    // String displayName =
-    //     await apiInstance!.getUserDisplayName("cif5mulm9m0s5jev1kwpmbjz7");
-    // print(displayName);
   }
 
   void lurk() {
     SpotifyApi spotify = apiInstance!.authenticate();
-    //spotify.me.get().then((value) => print('lurk is $value'),
-    //).onError((error, stackTrace) => print('lurk is null'));
     Navigator.pushNamed(context, '/grid_view', arguments: spotify);
   }
 
@@ -132,32 +95,19 @@ class _MyHomePageState extends State<MyHomePage> {
     SpotifyApi spotify = await apiInstance!.authenticateUser();
     var credentials = await spotify.getCredentials();
     String? id = credentials.clientId;
-    // Navigator.pushNamed(context, '/profile', arguments: id);
-    // String displayName = await apiInstance!.getUserDisplayName("cif5mulm9m0s5jev1kwpmbjz7");
-    // print("PLEASE");
-    // print(displayName);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return ProfilePage(userID: '$id',);
-        },
-      )
-    );
+    Navigator.push(context, MaterialPageRoute(
+      builder: (BuildContext context) {
+        return ProfilePage(
+          userID: '$id',
+        );
+      },
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(
           widget.title,
           style: TextStyle(color: Colors.black, fontSize: 35),
@@ -169,36 +119,13 @@ class _MyHomePageState extends State<MyHomePage> {
         toolbarHeight: 80,
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Container(
-                margin: EdgeInsets.all(15),
-                color: Color.fromRGBO(169, 209, 142, 1),
-                child: widgets.Image.asset(
-                  "assets/nearby_logo.png",
-                  alignment: Alignment.center,
-                  scale: 1,
-                ),
-              ),
-
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              child: widgets.Image.asset("assets/nearby_logo.png", scale: 1),
+            ),
             Container(
               child: ElevatedButton(
                 onPressed: share,
@@ -211,9 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   fixedSize: const Size(330, 50),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 5
             ),
             Container(
               child: ElevatedButton(
@@ -228,56 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            const SizedBox(
-                height: 15
-            ),
-            /*
-            Expanded(
-              child: ElevatedButton(
-                onPressed: profile,
-                child: Text("Profile",
-                    style: TextStyle(fontSize: 17, color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  fixedSize: const Size(330, 50),
-                ),
-              ),
-            ),
-            const SizedBox(
-                height: 10
-            ),
-
-
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  print("locating!");
-                  var pleaseWork = locate();
-                  // waits until location service is enabled
-                  var serviceStatus = await pleaseWork.checkLocationService();
-                  print("checked: service status is $serviceStatus");
-                  // waits until user gives their permission to share location
-                  var permissionStatus = await pleaseWork.checkPermission();
-                  print("permission: permission status is $permissionStatus");
-                  var backgroundPermission =
-                  await pleaseWork.backgroundPermission();
-                  print("background permission status is $backgroundPermission");
-                  // finding user location
-                  LocationData loc = await pleaseWork.findLocation();
-
-                  // can push back loc.latitude and loc.longitude onto latLon object
-                  print(loc);
-                },
-                child: const Text('print location'),
-              ),
-            ),
-
-             */
-            const SizedBox(
-                height: 10
-            ),
+            const SizedBox(height: 15),
+            const SizedBox(height: 10),
           ],
         ),
       ),
