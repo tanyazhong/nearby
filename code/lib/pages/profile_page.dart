@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage>{
   _ProfilePageState({required this.userID});
 
 
-
+  /// Gets name and profile picture associated with the user id passed in
   Future<List> getInfo(String id) async{
     var apiInstance = API();
     apiInstance.authenticate();
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage>{
 
     );
   }
-
+  /// builds the Display Name of the user on the profile page
   Widget buildName(String id) => Column(
     children: [
       Text(
@@ -120,6 +120,7 @@ class _ProfilePageState extends State<ProfilePage>{
     ],
   );
 
+  /// builds the Open Spotify button on the profile page
   Widget buildOpenSpotifyButton(String id) => OpenSpotify(
     text: 'Open Profile in Spotify',
     onClicked: () {

@@ -22,6 +22,7 @@ class ProfileWidget extends StatelessWidget{
     );
   }
 
+  /// Builds profile picture of a user.
   Widget buildImage(){
     final image = NetworkImage(imagePath);
 
