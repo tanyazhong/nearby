@@ -62,9 +62,14 @@ class locate {
     }
   }
 
+  /// Allows app to track user location in the background after asking for permission
+  ///
+  /// This function checks if user location tracking in the background is enabled and if it isn't,
+  /// it opens the location tracking service application on their device and waits for the user to return.
+  /// If the user has location tracking enabled in the background, the app asks the user for permission to enable the
+  /// app to track their location.
   Future<bool> backgroundPermission() async{
     await location.enableBackgroundMode(enable: true);
     return await location.isBackgroundModeEnabled();
   }
-
 }
