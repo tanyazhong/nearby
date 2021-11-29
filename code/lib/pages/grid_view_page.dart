@@ -37,8 +37,7 @@ class _GridViewPageState extends State<GridViewPage> {
       const snackBar = SnackBar(content: Text("Playlist generated!"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       LocationData location = await locate().findLocation();
-      dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(
-          location.latitude!, location.longitude!, _radius);
+      dynamic nearbySongs = await MongoDatabase.getNearbySongsForLoc(_radius);
       List<String> songUIs = [];
       for (dynamic song in nearbySongs) {
         songUIs.add(song[0]);
@@ -100,8 +99,7 @@ class _GridViewPageState extends State<GridViewPage> {
       ),
       body: FutureBuilder<dynamic>(
         //34.06892, -118.445183, 20
-        future:
-            MongoDatabase.getNearbySongsForLoc(34.06892, -118.445183, _radius),
+        future: MongoDatabase.getNearbySongsForLoc(_radius),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
