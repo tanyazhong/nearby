@@ -17,8 +17,8 @@ Future<void> addSongToDB(String? userID, String trackID) async {
   DatabaseEntry entry = DatabaseEntry();
   entry.userId = userID;
   entry.songId = trackID;
-  entry.lon = location.longitude.toString();
-  entry.lat = location.latitude.toString();
+  entry.lon = location.longitude;
+  entry.lat = location.latitude;
   print('lat is ${entry.lat}, lon is ${entry.lon}');
   print(entry);
   await MongoDatabase.insert(entry);
@@ -50,11 +50,10 @@ class TrackChange extends ChangeNotifier {
   bool eventChannelActive = false;
   EventChannel? _stream;
 
-
   void handleTrackChanges(SpotifyApi spotify) {
     print("handleTrackChanges");
     this.spotifyApi = spotify;
-    if(eventChannelActive== false){
+    if (eventChannelActive == false) {
       _stream = EventChannel('track_change');
       _stream!.receiveBroadcastStream().listen((event) {
         print("received broadcast in dart");
@@ -63,6 +62,4 @@ class TrackChange extends ChangeNotifier {
       eventChannelActive = true;
     }
   }
-
-
 }
